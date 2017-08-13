@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yqbd.mapper.TaskMapper" >
+  <resultMap id="BaseResultMap" type="com.yqbd.model.Task" >
+    <id column="task_id" property="taskId" jdbcType="INTEGER" />
+    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="classification" property="classification" jdbcType="VARCHAR" />
+    <result column="task_title" property="taskTitle" jdbcType="VARCHAR" />
+    <result column="task_status" property="taskStatus" jdbcType="INTEGER" />
+    <result column="pay" property="pay" jdbcType="DOUBLE" />
+    <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="complete_time" property="completeTime" jdbcType="TIMESTAMP" />
+    <result column="sign_up_people_number" property="signUpPeopleNumber" jdbcType="INTEGER" />
+    <result column="current_people_number" property="currentPeopleNumber" jdbcType="INTEGER" />
+    <result column="max_people_number" property="maxPeopleNumber" jdbcType="INTEGER" />
+    <result column="simple_drawing_address" property="simpleDrawingAddress" jdbcType="VARCHAR" />
+    <result column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="task_address" property="taskAddress" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.yqbd.model.Task" extends="BaseResultMap" >
+    <result column="task_description" property="taskDescription" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    task_id, company_id, user_id, classification, task_title, task_status, pay, publish_time, 
+    deadline, start_time, complete_time, sign_up_people_number, current_people_number, 
+    max_people_number, simple_drawing_address, group_id, province, city, district, task_address
+  </sql>
+  <sql id="Blob_Column_List" >
+    task_description
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from task
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from task
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yqbd.model.Task" >
+    insert into task (task_id, company_id, user_id, 
+      classification, task_title, task_status, 
+      pay, publish_time, deadline, 
+      start_time, complete_time, sign_up_people_number, 
+      current_people_number, max_people_number, simple_drawing_address, 
+      group_id, province, city, 
+      district, task_address, task_description
+      )
+    values (#{taskId,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{classification,jdbcType=VARCHAR}, #{taskTitle,jdbcType=VARCHAR}, #{taskStatus,jdbcType=INTEGER}, 
+      #{pay,jdbcType=DOUBLE}, #{publishTime,jdbcType=TIMESTAMP}, #{deadline,jdbcType=TIMESTAMP}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{completeTime,jdbcType=TIMESTAMP}, #{signUpPeopleNumber,jdbcType=INTEGER}, 
+      #{currentPeopleNumber,jdbcType=INTEGER}, #{maxPeopleNumber,jdbcType=INTEGER}, #{simpleDrawingAddress,jdbcType=VARCHAR}, 
+      #{groupId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{district,jdbcType=VARCHAR}, #{taskAddress,jdbcType=VARCHAR}, #{taskDescription,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yqbd.model.Task" >
+    insert into task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="taskId != null" >
+        task_id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="classification != null" >
+        classification,
+      </if>
+      <if test="taskTitle != null" >
+        task_title,
+      </if>
+      <if test="taskStatus != null" >
+        task_status,
+      </if>
+      <if test="pay != null" >
+        pay,
+      </if>
+      <if test="publishTime != null" >
+        publish_time,
+      </if>
+      <if test="deadline != null" >
+        deadline,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="completeTime != null" >
+        complete_time,
+      </if>
+      <if test="signUpPeopleNumber != null" >
+        sign_up_people_number,
+      </if>
+      <if test="currentPeopleNumber != null" >
+        current_people_number,
+      </if>
+      <if test="maxPeopleNumber != null" >
+        max_people_number,
+      </if>
+      <if test="simpleDrawingAddress != null" >
+        simple_drawing_address,
+      </if>
+      <if test="groupId != null" >
+        group_id,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="taskAddress != null" >
+        task_address,
+      </if>
+      <if test="taskDescription != null" >
+        task_description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="taskId != null" >
+        #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="classification != null" >
+        #{classification,jdbcType=VARCHAR},
+      </if>
+      <if test="taskTitle != null" >
+        #{taskTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="taskStatus != null" >
+        #{taskStatus,jdbcType=INTEGER},
+      </if>
+      <if test="pay != null" >
+        #{pay,jdbcType=DOUBLE},
+      </if>
+      <if test="publishTime != null" >
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deadline != null" >
+        #{deadline,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completeTime != null" >
+        #{completeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signUpPeopleNumber != null" >
+        #{signUpPeopleNumber,jdbcType=INTEGER},
+      </if>
+      <if test="currentPeopleNumber != null" >
+        #{currentPeopleNumber,jdbcType=INTEGER},
+      </if>
+      <if test="maxPeopleNumber != null" >
+        #{maxPeopleNumber,jdbcType=INTEGER},
+      </if>
+      <if test="simpleDrawingAddress != null" >
+        #{simpleDrawingAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="taskAddress != null" >
+        #{taskAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDescription != null" >
+        #{taskDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yqbd.model.Task" >
+    update task
+    <set >
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="classification != null" >
+        classification = #{classification,jdbcType=VARCHAR},
+      </if>
+      <if test="taskTitle != null" >
+        task_title = #{taskTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="taskStatus != null" >
+        task_status = #{taskStatus,jdbcType=INTEGER},
+      </if>
+      <if test="pay != null" >
+        pay = #{pay,jdbcType=DOUBLE},
+      </if>
+      <if test="publishTime != null" >
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deadline != null" >
+        deadline = #{deadline,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completeTime != null" >
+        complete_time = #{completeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signUpPeopleNumber != null" >
+        sign_up_people_number = #{signUpPeopleNumber,jdbcType=INTEGER},
+      </if>
+      <if test="currentPeopleNumber != null" >
+        current_people_number = #{currentPeopleNumber,jdbcType=INTEGER},
+      </if>
+      <if test="maxPeopleNumber != null" >
+        max_people_number = #{maxPeopleNumber,jdbcType=INTEGER},
+      </if>
+      <if test="simpleDrawingAddress != null" >
+        simple_drawing_address = #{simpleDrawingAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="taskAddress != null" >
+        task_address = #{taskAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDescription != null" >
+        task_description = #{taskDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yqbd.model.Task" >
+    update task
+    set company_id = #{companyId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      classification = #{classification,jdbcType=VARCHAR},
+      task_title = #{taskTitle,jdbcType=VARCHAR},
+      task_status = #{taskStatus,jdbcType=INTEGER},
+      pay = #{pay,jdbcType=DOUBLE},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      deadline = #{deadline,jdbcType=TIMESTAMP},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      complete_time = #{completeTime,jdbcType=TIMESTAMP},
+      sign_up_people_number = #{signUpPeopleNumber,jdbcType=INTEGER},
+      current_people_number = #{currentPeopleNumber,jdbcType=INTEGER},
+      max_people_number = #{maxPeopleNumber,jdbcType=INTEGER},
+      simple_drawing_address = #{simpleDrawingAddress,jdbcType=VARCHAR},
+      group_id = #{groupId,jdbcType=INTEGER},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      task_address = #{taskAddress,jdbcType=VARCHAR},
+      task_description = #{taskDescription,jdbcType=LONGVARCHAR}
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yqbd.model.Task" >
+    update task
+    set company_id = #{companyId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      classification = #{classification,jdbcType=VARCHAR},
+      task_title = #{taskTitle,jdbcType=VARCHAR},
+      task_status = #{taskStatus,jdbcType=INTEGER},
+      pay = #{pay,jdbcType=DOUBLE},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      deadline = #{deadline,jdbcType=TIMESTAMP},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      complete_time = #{completeTime,jdbcType=TIMESTAMP},
+      sign_up_people_number = #{signUpPeopleNumber,jdbcType=INTEGER},
+      current_people_number = #{currentPeopleNumber,jdbcType=INTEGER},
+      max_people_number = #{maxPeopleNumber,jdbcType=INTEGER},
+      simple_drawing_address = #{simpleDrawingAddress,jdbcType=VARCHAR},
+      group_id = #{groupId,jdbcType=INTEGER},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      task_address = #{taskAddress,jdbcType=VARCHAR}
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </update>
+  <select id="getTasksById" resultType="com.yqbd.model.Task" >
+    select * from task where task_id in (SELECT task_id from user_take WHERE user_id= #{userId,jdbcType=INTEGER})
+  </select>
+
+  <select id="getPublishedTasksById" resultType="com.yqbd.model.Task">
+    select * from task where user_id=#{userId,jdbcType=INTEGER}
+  </select>
+</mapper>

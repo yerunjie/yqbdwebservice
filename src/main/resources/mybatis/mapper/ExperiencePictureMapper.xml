@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yqbd.mapper.ExperiencePictureMapper" >
+  <resultMap id="BaseResultMap" type="com.yqbd.model.ExperiencePictureKey" >
+    <id column="experience_id" property="experienceId" jdbcType="INTEGER" />
+    <id column="picture_address" property="pictureAddress" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.yqbd.model.ExperiencePictureKey" >
+    delete from experience_picture
+    where experience_id = #{experienceId,jdbcType=INTEGER}
+      and picture_address = #{pictureAddress,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yqbd.model.ExperiencePictureKey" >
+    insert into experience_picture (experience_id, picture_address)
+    values (#{experienceId,jdbcType=INTEGER}, #{pictureAddress,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yqbd.model.ExperiencePictureKey" >
+    insert into experience_picture
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="experienceId != null" >
+        experience_id,
+      </if>
+      <if test="pictureAddress != null" >
+        picture_address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="experienceId != null" >
+        #{experienceId,jdbcType=INTEGER},
+      </if>
+      <if test="pictureAddress != null" >
+        #{pictureAddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

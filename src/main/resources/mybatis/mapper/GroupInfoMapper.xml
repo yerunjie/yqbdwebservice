@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yqbd.mapper.GroupInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.yqbd.model.GroupInfo" >
+    <id column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+    <result column="group_title" property="groupTitle" jdbcType="VARCHAR" />
+    <result column="current_people_number" property="currentPeopleNumber" jdbcType="INTEGER" />
+    <result column="max_people_number" property="maxPeopleNumber" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.yqbd.model.GroupInfo" extends="BaseResultMap" >
+    <result column="group_description" property="groupDescription" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    group_id, company_id, group_title, current_people_number, max_people_number
+  </sql>
+  <sql id="Blob_Column_List" >
+    group_description
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from group_info
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from group_info
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yqbd.model.GroupInfo" >
+    insert into group_info (group_id, company_id, group_title, 
+      current_people_number, max_people_number, group_description
+      )
+    values (#{groupId,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, #{groupTitle,jdbcType=VARCHAR}, 
+      #{currentPeopleNumber,jdbcType=INTEGER}, #{maxPeopleNumber,jdbcType=INTEGER}, #{groupDescription,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yqbd.model.GroupInfo" >
+    insert into group_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="groupId != null" >
+        group_id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="groupTitle != null" >
+        group_title,
+      </if>
+      <if test="currentPeopleNumber != null" >
+        current_people_number,
+      </if>
+      <if test="maxPeopleNumber != null" >
+        max_people_number,
+      </if>
+      <if test="groupDescription != null" >
+        group_description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="groupId != null" >
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="groupTitle != null" >
+        #{groupTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="currentPeopleNumber != null" >
+        #{currentPeopleNumber,jdbcType=INTEGER},
+      </if>
+      <if test="maxPeopleNumber != null" >
+        #{maxPeopleNumber,jdbcType=INTEGER},
+      </if>
+      <if test="groupDescription != null" >
+        #{groupDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yqbd.model.GroupInfo" >
+    update group_info
+    <set >
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="groupTitle != null" >
+        group_title = #{groupTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="currentPeopleNumber != null" >
+        current_people_number = #{currentPeopleNumber,jdbcType=INTEGER},
+      </if>
+      <if test="maxPeopleNumber != null" >
+        max_people_number = #{maxPeopleNumber,jdbcType=INTEGER},
+      </if>
+      <if test="groupDescription != null" >
+        group_description = #{groupDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yqbd.model.GroupInfo" >
+    update group_info
+    set company_id = #{companyId,jdbcType=INTEGER},
+      group_title = #{groupTitle,jdbcType=VARCHAR},
+      current_people_number = #{currentPeopleNumber,jdbcType=INTEGER},
+      max_people_number = #{maxPeopleNumber,jdbcType=INTEGER},
+      group_description = #{groupDescription,jdbcType=LONGVARCHAR}
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yqbd.model.GroupInfo" >
+    update group_info
+    set company_id = #{companyId,jdbcType=INTEGER},
+      group_title = #{groupTitle,jdbcType=VARCHAR},
+      current_people_number = #{currentPeopleNumber,jdbcType=INTEGER},
+      max_people_number = #{maxPeopleNumber,jdbcType=INTEGER}
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByCompanyId" resultType="com.yqbd.model.GroupInfo">
+    SELECT *
+    FROM group_info
+    WHERE company_id = #{companyId,jdbcType=INTEGER}
+  </select>
+</mapper>

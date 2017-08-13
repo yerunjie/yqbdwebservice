@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yqbd.mapper.GroupMemberMapper" >
+  <resultMap id="BaseResultMap" type="com.yqbd.model.GroupMember" >
+    <id column="group_id" property="groupId" jdbcType="INTEGER" />
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="participate_time" property="participateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    group_id, user_id, participate_time, status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.yqbd.model.GroupMemberKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from group_member
+    where group_id = #{groupId,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.yqbd.model.GroupMemberKey" >
+    delete from group_member
+    where group_id = #{groupId,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yqbd.model.GroupMember" >
+    insert into group_member (group_id, user_id, participate_time, 
+      status)
+    values (#{groupId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{participateTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yqbd.model.GroupMember" >
+    insert into group_member
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="groupId != null" >
+        group_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="participateTime != null" >
+        participate_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="groupId != null" >
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="participateTime != null" >
+        #{participateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yqbd.model.GroupMember" >
+    update group_member
+    <set >
+      <if test="participateTime != null" >
+        participate_time = #{participateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where group_id = #{groupId,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yqbd.model.GroupMember" >
+    update group_member
+    set participate_time = #{participateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER}
+    where group_id = #{groupId,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByUserId" parameterType="Integer" resultType="com.yqbd.model.GroupMember">
+    select *
+    from group_member
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByGroupId" parameterType="Integer" resultType="com.yqbd.model.GroupMember">
+    select *
+    from group_member
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByGroupId" parameterType="Integer">
+    delete from group_member
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </delete>
+</mapper>
