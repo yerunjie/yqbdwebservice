@@ -11,22 +11,6 @@
   <sql id="Base_Column_List" >
     task_id, company_id, status, user_comment_id, company_comment_id
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from company_take
-    where task_id = #{taskId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from company_take
-    where task_id = #{taskId,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.yqbd.model.CompanyTake" >
-    insert into company_take (task_id, company_id, status, 
-      user_comment_id, company_comment_id)
-    values (#{taskId,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
-      #{userCommentId,jdbcType=INTEGER}, #{companyCommentId,jdbcType=INTEGER})
-  </insert>
   <insert id="insertSelective" parameterType="com.yqbd.model.CompanyTake" >
     insert into company_take
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -80,14 +64,6 @@
         company_comment_id = #{companyCommentId,jdbcType=INTEGER},
       </if>
     </set>
-    where task_id = #{taskId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yqbd.model.CompanyTake" >
-    update company_take
-    set company_id = #{companyId,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
-      user_comment_id = #{userCommentId,jdbcType=INTEGER},
-      company_comment_id = #{companyCommentId,jdbcType=INTEGER}
     where task_id = #{taskId,jdbcType=INTEGER}
   </update>
 </mapper>

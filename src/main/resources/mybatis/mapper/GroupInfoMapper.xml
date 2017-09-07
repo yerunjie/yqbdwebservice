@@ -17,26 +17,6 @@
   <sql id="Blob_Column_List" >
     group_description
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from group_info
-    where group_id = #{groupId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from group_info
-    where group_id = #{groupId,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.yqbd.model.GroupInfo" >
-    insert into group_info (group_id, company_id, group_title, 
-      current_people_number, max_people_number, group_description
-      )
-    values (#{groupId,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, #{groupTitle,jdbcType=VARCHAR}, 
-      #{currentPeopleNumber,jdbcType=INTEGER}, #{maxPeopleNumber,jdbcType=INTEGER}, #{groupDescription,jdbcType=LONGVARCHAR}
-      )
-  </insert>
   <insert id="insertSelective" parameterType="com.yqbd.model.GroupInfo" >
     insert into group_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -101,26 +81,4 @@
     </set>
     where group_id = #{groupId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yqbd.model.GroupInfo" >
-    update group_info
-    set company_id = #{companyId,jdbcType=INTEGER},
-      group_title = #{groupTitle,jdbcType=VARCHAR},
-      current_people_number = #{currentPeopleNumber,jdbcType=INTEGER},
-      max_people_number = #{maxPeopleNumber,jdbcType=INTEGER},
-      group_description = #{groupDescription,jdbcType=LONGVARCHAR}
-    where group_id = #{groupId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yqbd.model.GroupInfo" >
-    update group_info
-    set company_id = #{companyId,jdbcType=INTEGER},
-      group_title = #{groupTitle,jdbcType=VARCHAR},
-      current_people_number = #{currentPeopleNumber,jdbcType=INTEGER},
-      max_people_number = #{maxPeopleNumber,jdbcType=INTEGER}
-    where group_id = #{groupId,jdbcType=INTEGER}
-  </update>
-  <select id="selectByCompanyId" resultType="com.yqbd.model.GroupInfo">
-    SELECT *
-    FROM group_info
-    WHERE company_id = #{companyId,jdbcType=INTEGER}
-  </select>
 </mapper>

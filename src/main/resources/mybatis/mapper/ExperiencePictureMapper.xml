@@ -5,15 +5,6 @@
     <id column="experience_id" property="experienceId" jdbcType="INTEGER" />
     <id column="picture_address" property="pictureAddress" jdbcType="VARCHAR" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="com.yqbd.model.ExperiencePictureKey" >
-    delete from experience_picture
-    where experience_id = #{experienceId,jdbcType=INTEGER}
-      and picture_address = #{pictureAddress,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.yqbd.model.ExperiencePictureKey" >
-    insert into experience_picture (experience_id, picture_address)
-    values (#{experienceId,jdbcType=INTEGER}, #{pictureAddress,jdbcType=VARCHAR})
-  </insert>
   <insert id="insertSelective" parameterType="com.yqbd.model.ExperiencePictureKey" >
     insert into experience_picture
     <trim prefix="(" suffix=")" suffixOverrides="," >

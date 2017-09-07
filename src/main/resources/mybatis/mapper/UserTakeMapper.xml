@@ -11,24 +11,6 @@
   <sql id="Base_Column_List" >
     task_id, user_id, status, publisher_comment_id, receiver_comment_id
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.yqbd.model.UserTakeKey" >
-    select 
-    <include refid="Base_Column_List" />
-    from user_take
-    where task_id = #{taskId,jdbcType=INTEGER}
-      and user_id = #{userId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.yqbd.model.UserTakeKey" >
-    delete from user_take
-    where task_id = #{taskId,jdbcType=INTEGER}
-      and user_id = #{userId,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.yqbd.model.UserTake" >
-    insert into user_take (task_id, user_id, status, 
-      publisher_comment_id, receiver_comment_id)
-    values (#{taskId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
-      #{publisherCommentId,jdbcType=INTEGER}, #{receiverCommentId,jdbcType=INTEGER})
-  </insert>
   <insert id="insertSelective" parameterType="com.yqbd.model.UserTake" >
     insert into user_take
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -79,14 +61,6 @@
         receiver_comment_id = #{receiverCommentId,jdbcType=INTEGER},
       </if>
     </set>
-    where task_id = #{taskId,jdbcType=INTEGER}
-      and user_id = #{userId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yqbd.model.UserTake" >
-    update user_take
-    set status = #{status,jdbcType=INTEGER},
-      publisher_comment_id = #{publisherCommentId,jdbcType=INTEGER},
-      receiver_comment_id = #{receiverCommentId,jdbcType=INTEGER}
     where task_id = #{taskId,jdbcType=INTEGER}
       and user_id = #{userId,jdbcType=INTEGER}
   </update>

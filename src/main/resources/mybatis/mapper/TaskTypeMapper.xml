@@ -5,15 +5,6 @@
     <id column="task_id" property="taskId" jdbcType="INTEGER" />
     <id column="type_id" property="typeId" jdbcType="INTEGER" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="com.yqbd.model.TaskTypeKey" >
-    delete from task_type
-    where task_id = #{taskId,jdbcType=INTEGER}
-      and type_id = #{typeId,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.yqbd.model.TaskTypeKey" >
-    insert into task_type (task_id, type_id)
-    values (#{taskId,jdbcType=INTEGER}, #{typeId,jdbcType=INTEGER})
-  </insert>
   <insert id="insertSelective" parameterType="com.yqbd.model.TaskTypeKey" >
     insert into task_type
     <trim prefix="(" suffix=")" suffixOverrides="," >

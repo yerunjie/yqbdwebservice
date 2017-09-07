@@ -9,22 +9,6 @@
   <sql id="Base_Column_List" >
     type_id, type_classification, type_name
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from type
-    where type_id = #{typeId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from type
-    where type_id = #{typeId,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.yqbd.model.Type" >
-    insert into type (type_id, type_classification, type_name
-      )
-    values (#{typeId,jdbcType=INTEGER}, #{typeClassification,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}
-      )
-  </insert>
   <insert id="insertSelective" parameterType="com.yqbd.model.Type" >
     insert into type
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -62,14 +46,4 @@
     </set>
     where type_id = #{typeId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.yqbd.model.Type" >
-    update type
-    set type_classification = #{typeClassification,jdbcType=VARCHAR},
-      type_name = #{typeName,jdbcType=VARCHAR}
-    where type_id = #{typeId,jdbcType=INTEGER}
-  </update>
-  <select id="selectAllTypes" resultType="com.yqbd.model.Type">
-    SELECT *
-    FROM type
-  </select>
 </mapper>

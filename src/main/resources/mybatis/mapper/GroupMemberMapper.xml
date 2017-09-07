@@ -10,24 +10,6 @@
   <sql id="Base_Column_List" >
     group_id, user_id, participate_time, status
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.yqbd.model.GroupMemberKey" >
-    select 
-    <include refid="Base_Column_List" />
-    from group_member
-    where group_id = #{groupId,jdbcType=INTEGER}
-      and user_id = #{userId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.yqbd.model.GroupMemberKey" >
-    delete from group_member
-    where group_id = #{groupId,jdbcType=INTEGER}
-      and user_id = #{userId,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.yqbd.model.GroupMember" >
-    insert into group_member (group_id, user_id, participate_time, 
-      status)
-    values (#{groupId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{participateTime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=INTEGER})
-  </insert>
   <insert id="insertSelective" parameterType="com.yqbd.model.GroupMember" >
     insert into group_member
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -72,26 +54,4 @@
     where group_id = #{groupId,jdbcType=INTEGER}
       and user_id = #{userId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.yqbd.model.GroupMember" >
-    update group_member
-    set participate_time = #{participateTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=INTEGER}
-    where group_id = #{groupId,jdbcType=INTEGER}
-      and user_id = #{userId,jdbcType=INTEGER}
-  </update>
-
-  <select id="selectByUserId" parameterType="Integer" resultType="com.yqbd.model.GroupMember">
-    select *
-    from group_member
-    where user_id = #{userId,jdbcType=INTEGER}
-  </select>
-  <select id="selectByGroupId" parameterType="Integer" resultType="com.yqbd.model.GroupMember">
-    select *
-    from group_member
-    where group_id = #{groupId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByGroupId" parameterType="Integer">
-    delete from group_member
-    where group_id = #{groupId,jdbcType=INTEGER}
-  </delete>
 </mapper>

@@ -17,26 +17,6 @@
   <sql id="Blob_Column_List" >
     content
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from experience
-    where experience_id = #{experienceId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from experience
-    where experience_id = #{experienceId,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.yqbd.model.Experience" >
-    insert into experience (experience_id, user_id, company_id, 
-      task_id, title, content
-      )
-    values (#{experienceId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, 
-      #{taskId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
-      )
-  </insert>
   <insert id="insertSelective" parameterType="com.yqbd.model.Experience" >
     insert into experience
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -99,23 +79,6 @@
         content = #{content,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where experience_id = #{experienceId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yqbd.model.Experience" >
-    update experience
-    set user_id = #{userId,jdbcType=INTEGER},
-      company_id = #{companyId,jdbcType=INTEGER},
-      task_id = #{taskId,jdbcType=INTEGER},
-      title = #{title,jdbcType=VARCHAR},
-      content = #{content,jdbcType=LONGVARCHAR}
-    where experience_id = #{experienceId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yqbd.model.Experience" >
-    update experience
-    set user_id = #{userId,jdbcType=INTEGER},
-      company_id = #{companyId,jdbcType=INTEGER},
-      task_id = #{taskId,jdbcType=INTEGER},
-      title = #{title,jdbcType=VARCHAR}
     where experience_id = #{experienceId,jdbcType=INTEGER}
   </update>
 </mapper>
