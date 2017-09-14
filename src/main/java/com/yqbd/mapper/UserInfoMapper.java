@@ -53,4 +53,10 @@ public interface UserInfoMapper {
         "where user_id = #{userId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(UserInfo record);
+
+    @Select(
+            "SELECT * FROM user_info WHERE account_number = #{accountNumber,jdbcType=VARCHAR"
+    )
+    @ResultMap("BaseResultMap")
+    UserInfo selectByAccountNumber(String account_number);
 }

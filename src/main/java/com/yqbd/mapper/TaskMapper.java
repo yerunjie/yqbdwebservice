@@ -1,11 +1,9 @@
 package com.yqbd.mapper;
 
 import com.yqbd.model.Task;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 public interface TaskMapper {
     @Delete({
@@ -106,4 +104,29 @@ public interface TaskMapper {
         "where task_id = #{taskId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(Task record);
+
+
+    @Select({
+           " select * from task where user_id=#{userId,jdbcType=INTEGER}"
+    })
+    @ResultMap("ResultMapWithBLOBs")
+    List<Task> getPublishedTasksById(Integer userId);
+
+    @Select({
+            " select * from task where task_id in (SELECT task_id from user_take WHERE user_id= #{userId,jdbcType=INTEGER})"
+    })
+    @ResultMap("ResultMapWithBLOBs")
+    List<Task> getTasksById(Integer userId);
+
+
+    @Select({
+            "  SELECT * FROM task"
+    })
+
+    @ResultMap("ResultMapWithBLOBs")
+    List<Task> selectAllTasks();
+
+    @ResultMap("ResultMapWithBLOBs")
+    List<Task>getSearchTasks(List<Integer>list);
+
 }

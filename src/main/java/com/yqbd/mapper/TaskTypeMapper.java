@@ -19,4 +19,7 @@ public interface TaskTypeMapper {
     int insert(TaskTypeKey record);
 
     int insertSelective(TaskTypeKey record);
+
+
+
 }

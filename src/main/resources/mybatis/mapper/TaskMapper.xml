@@ -233,4 +233,15 @@
     </set>
     where task_id = #{taskId,jdbcType=INTEGER}
   </update>
+
+  <select id="getSearchTasks" resultType="com.yqbd.model.Task">
+    select *
+    from task ta where ta.task_id in(
+    select task_id from task_type where type_id in
+    <foreach collection="list" item="type_id" index="index"
+             open="(" close=")" separator=",">
+      #{type_id}
+    </foreach>)
+  </select>
+
 </mapper>

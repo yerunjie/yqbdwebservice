@@ -46,4 +46,13 @@
     </set>
     where type_id = #{typeId,jdbcType=INTEGER}
   </update>
+  <select id="getSearchType" resultType="Integer">
+    select type_id
+    from type t
+    where t.type_name in
+    <foreach collection="array" item="type_name" index="index"
+             open="(" close=")" separator=",">
+      #{type_name}
+    </foreach>
+  </select>
 </mapper>

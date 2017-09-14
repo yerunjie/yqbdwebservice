@@ -1,11 +1,9 @@
 package com.yqbd.mapper;
 
 import com.yqbd.model.GroupInfo;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 public interface GroupInfoMapper {
     @Delete({
@@ -58,4 +56,13 @@ public interface GroupInfoMapper {
         "where group_id = #{groupId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(GroupInfo record);
+
+
+    @Select(
+          "SELECT *   FROM group_info WHERE company_id = #{companyId,jdbcType=INTEGER}"
+    )
+    @ResultMap("ResultMapWithBLOBs")
+    List<GroupInfo> selectByCompanyId(Integer companyId);
+
+
 }
