@@ -1,11 +1,9 @@
 package com.yqbd.mapper;
 
 import com.yqbd.model.Type;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 public interface TypeMapper {
     @Delete({
@@ -42,4 +40,13 @@ public interface TypeMapper {
         "where type_id = #{typeId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(Type record);
+
+    @Select(
+            "  SELECT * FROM type"
+    )
+    @ResultMap("BaseResultMap")
+    List<Type> selectAllTypes();
+
+    @ResultMap("BaseResultMap")
+    List<Integer>getSearchType(String[] list);
 }

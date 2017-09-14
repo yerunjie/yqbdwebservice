@@ -6,18 +6,12 @@ import com.yqbd.controller.BaseController;
 import com.yqbd.mapper.TaskMapper;
 import com.yqbd.mapper.TypeMapper;
 import com.yqbd.mapper.UserTakeMapper;
-import com.yqbd.model.Task;
-import com.yqbd.model.Type;
-import com.yqbd.model.UserTake;
-import com.yqbd.model.UserTakeKey;
+import com.yqbd.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by 11022 on 2017/7/21.
@@ -41,6 +35,37 @@ public class TaskController extends BaseController {
         BaseJson baseJson = new BaseJson();
         List<Type> types = typeMapper.selectAllTypes();
         baseJson.setObj(types);
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/getAllTasks")
+    @ResponseBody
+    public BaseJson getAllTasks() {
+        BaseJson baseJson = new BaseJson();
+        List<Task> tasks = taskMapper.selectAllTasks();
+        baseJson.setObj(tasks);
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/getSearchTypes")
+    @ResponseBody
+    public BaseJson getSearchTypes() {
+        List<Type> typelist = typeMapper.selectAllTypes();
+        // typelist.stream().collect(Collectors.groupingBy(Type::getTypeClassification));
+        Map<String, List<Type>> map = typelist.stream().collect(Collectors.groupingBy(Type::getTypeClassification));
+        List<SearchType> list = new ArrayList<>();
+        Iterator iter = map.entrySet().iterator();
+        while (iter.hasNext()) {
+            SearchType tmp = new SearchType();
+            Map.Entry entry = (Map.Entry) iter.next();
+            Object key = entry.getKey();
+            tmp.setName((String) key);
+            Object val = entry.getValue();
+            tmp.setTypes((List<Type>) val);
+            list.add(tmp);
+        }
+        BaseJson baseJson = new BaseJson();
+        baseJson.setObj(list);
         return baseJson;
     }
 
@@ -122,6 +147,19 @@ public class TaskController extends BaseController {
     public void cancelPublishedTask(@RequestParam("taskId") int taskId){
         taskMapper.deleteByPrimaryKey(taskId);
         System.out.println("task"+taskId+"已删除");
+    }
+    @RequestMapping(value = "/getSearch")
+    public BaseJson getSearch(@RequestParam("map") String map)
+    {
+        System.out.println(map);
+        String[] list=map.split(",");
+        List<Integer> typeList=typeMapper.getSearchType(list);
+        typeList.add(0);
+        System.out.println(typeList);
+        List<Task> tasks= taskMapper.getSearchTasks(typeList);
+        BaseJson baseJson=new BaseJson();
+        baseJson.setObj(tasks);
+        return baseJson;
     }
 
     @RequestMapping(value = "/cancelTaken")
