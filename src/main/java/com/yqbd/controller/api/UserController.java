@@ -19,6 +19,8 @@ public class UserController {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
+
+
     @RequestMapping(value = "/getUserInfoByUserID")
     public BaseJson getUserInfoByUserID(@RequestParam("userID") int userID) {
         BaseJson baseJson = new BaseJson();
