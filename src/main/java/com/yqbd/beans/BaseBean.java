@@ -10,6 +10,10 @@ public class BaseBean {
         singleResult = "";
     }
 
+    public BaseBean(Object singleResult) {
+        this.singleResult = singleResult.toString();
+    }
+
     public String getSingleResult() {
         return singleResult;
     }

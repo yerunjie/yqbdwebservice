@@ -13,7 +13,7 @@
     <result column="credit_level" property="creditLevel" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    user_id, account_number, password, sex, real_name, nick_name, head_portrait, professional_level, 
+    user_id, account_number, password, sex, real_name, nick_name, head_portrait, professional_level,
     credit_level
   </sql>
   <insert id="insertSelective" parameterType="com.yqbd.model.UserInfo" >

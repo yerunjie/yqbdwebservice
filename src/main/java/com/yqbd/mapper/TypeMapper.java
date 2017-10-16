@@ -48,5 +48,5 @@ public interface TypeMapper {
     List<Type> selectAllTypes();
 
     @ResultMap("BaseResultMap")
-    List<Integer>getSearchType(String[] list);
+    List<Integer> getSearchType(String[] list);
 }

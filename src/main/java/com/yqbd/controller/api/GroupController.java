@@ -46,14 +46,14 @@ public class GroupController {
     }
 
     @RequestMapping(value = "/getGroupByGroupId", method = RequestMethod.POST)
-    public  BaseJson getGroupByGroupId(@RequestParam("groupId") int groupId){
+    public BaseJson getGroupByGroupId(@RequestParam("groupId") int groupId) {
         BaseJson baseJson = new BaseJson();
         GroupInfo group = groupInfoMapper.selectByPrimaryKey(groupId);
-        if (group != null){
+        if (group != null) {
             baseJson.setReturnCode("4.8.0");
             baseJson.setErrorMessage("成功");
             baseJson.setObj(group);
-        }else {
+        } else {
             baseJson.setReturnCode("4.8.E.1");
             baseJson.setErrorMessage("小组不存在");
         }
@@ -62,15 +62,15 @@ public class GroupController {
     }
 
     @RequestMapping(value = "/getGroupsByUserIdAndStatus", method = RequestMethod.POST)
-    public  BaseJson getGroupsByUserIdAndStatus(@RequestParam("userId") int userId,
-                                                @RequestParam("status") int status){
+    public BaseJson getGroupsByUserIdAndStatus(@RequestParam("userId") int userId,
+                                               @RequestParam("status") int status) {
         BaseJson baseJson = new BaseJson();
         List<GroupMember> groupMemberList = new ArrayList<>();
         List<GroupInfo> groupInfoList = new ArrayList<>();
         groupMemberList.addAll(groupMemberMapper.selectByUserId(userId));
 
-        if (groupMemberList.size() > 0){
-            for (GroupMember groupMember : groupMemberList){
+        if (groupMemberList.size() > 0) {
+            for (GroupMember groupMember : groupMemberList) {
                 if (groupMember.getStatus() == status)
                     groupInfoList.add(groupInfoMapper.selectByPrimaryKey(groupMember.getGroupId()));
             }
@@ -87,20 +87,20 @@ public class GroupController {
     }
 
     @RequestMapping(value = "/getUncheckedApplications", method = RequestMethod.POST)
-    public  BaseJson getUncheckedApplications(@RequestParam("companyId") int companyId,
-                                              @RequestParam("status") int status){
+    public BaseJson getUncheckedApplications(@RequestParam("companyId") int companyId,
+                                             @RequestParam("status") int status) {
         BaseJson baseJson = new BaseJson();
         List<ApplicationBean> uncheckedApplications = new ArrayList<>();
         List<GroupInfo> companyGroupList = new ArrayList<>();
         companyGroupList.addAll(groupInfoMapper.selectByCompanyId(companyId));
 
-        if (companyGroupList.size() > 0){
-            for (GroupInfo groupInfo : companyGroupList){
+        if (companyGroupList.size() > 0) {
+            for (GroupInfo groupInfo : companyGroupList) {
                 List<GroupMember> tmpList = groupMemberMapper.selectByGroupId(groupInfo.getGroupId());
-                for (GroupMember item : tmpList){
-                    if (item.getStatus() == status){
+                for (GroupMember item : tmpList) {
+                    if (item.getStatus() == status) {
                         UserInfo candidateInfo = userInfoMapper.selectByPrimaryKey(item.getUserId());
-                        ApplicationBean applicationBean = new ApplicationBean(groupInfo,candidateInfo,item);
+                        ApplicationBean applicationBean = new ApplicationBean(groupInfo, candidateInfo, item);
                         uncheckedApplications.add(applicationBean);
                     }
                 }
@@ -126,20 +126,20 @@ public class GroupController {
         baseJson.setReturnCode("4.0.0");
         List<GroupInfo> groups = groupInfoMapper.selectByCompanyId(companyId);
         //groups.addAll(groupInfoMapper.selectByCompanyId(companyId));
-        for (GroupInfo group : groups){
-            if (group.getGroupTitle().equals(groupTitle)){
+        for (GroupInfo group : groups) {
+            if (group.getGroupTitle().equals(groupTitle)) {
                 baseJson.setObj(group);
                 baseJson.setReturnCode("4.0.E.1");
                 baseJson.setErrorMessage("该小组已存在");
                 break;
             }
         }
-        if (baseJson.getReturnCode().equals("4.0.0")){
-            GroupInfo group = new GroupInfo(companyId,groupTitle,0,maxPeopleNumber,groupDescription);
+        if (baseJson.getReturnCode().equals("4.0.0")) {
+            GroupInfo group = new GroupInfo(companyId, groupTitle, 0, maxPeopleNumber, groupDescription);
             groupInfoMapper.insertSelective(group);
             groups.addAll(groupInfoMapper.selectByCompanyId(companyId));
-            for (GroupInfo targetgroup : groups){
-                if (targetgroup.getGroupTitle().equals(groupTitle)){
+            for (GroupInfo targetgroup : groups) {
+                if (targetgroup.getGroupTitle().equals(groupTitle)) {
                     baseJson.setObj(targetgroup);
                     baseJson.setErrorMessage("成功");
                     break;
@@ -150,13 +150,13 @@ public class GroupController {
     }
 
 
-    @RequestMapping(value = "/deleteGroup" , method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteGroup", method = RequestMethod.POST)
     public BaseJson deleteGroup(@RequestParam("groupId") Integer groupId,
-                                @RequestParam("companyId") Integer companyId){
+                                @RequestParam("companyId") Integer companyId) {
         BaseJson baseJson = new BaseJson();
         GroupInfo groupInfo = groupInfoMapper.selectByPrimaryKey(groupId);
-        if (groupInfo != null){
-            if (groupInfo.getCompanyId() == companyId){
+        if (groupInfo != null) {
+            if (groupInfo.getCompanyId() == companyId) {
                 groupInfoMapper.deleteByPrimaryKey(groupId);
                 groupMemberMapper.deleteByGroupId(groupId);
                 baseJson.setReturnCode("4.1.0");
@@ -177,16 +177,16 @@ public class GroupController {
 
 
     //个人用户用：status=0 已加入状态，status=1 加入申请审核状态
-    @RequestMapping(value = "/joinApply" , method = RequestMethod.POST)
+    @RequestMapping(value = "/joinApply", method = RequestMethod.POST)
     public BaseJson joinApply(@RequestParam("groupId") int groupId,
-                                     @RequestParam("userId") int userId){
+                              @RequestParam("userId") int userId) {
         BaseJson baseJson = new BaseJson();
 
         GroupMemberKey groupMemberKey = new GroupMemberKey();
         groupMemberKey.setGroupId(groupId);
         groupMemberKey.setUserId(userId);
         GroupMember groupMember = groupMemberMapper.selectByPrimaryKey(groupMemberKey);
-        if (groupMember != null){
+        if (groupMember != null) {
             baseJson.setReturnCode("4.2.E.1");
             baseJson.setErrorMessage("您已提交过入组申请");
         } else {
@@ -194,7 +194,7 @@ public class GroupController {
             groupMember = new GroupMember();
             groupMember.setUserId(userId);
             groupMember.setGroupId(groupId);
-            if (group.getCurrentPeopleNumber() < group.getMaxPeopleNumber()){
+            if (group.getCurrentPeopleNumber() < group.getMaxPeopleNumber()) {
                 groupMember.setStatus(1);
                 groupMemberMapper.insertSelective(groupMember);
                 baseJson.setReturnCode("4.2.0");
@@ -212,9 +212,9 @@ public class GroupController {
     }
 
     //个人用户用，status=0 已加入状态，status=1 加入申请审核状态
-    @RequestMapping(value = "/joinCancel" , method = RequestMethod.POST)
+    @RequestMapping(value = "/joinCancel", method = RequestMethod.POST)
     public BaseJson joinCancel(@RequestParam("groupId") int groupId,
-                              @RequestParam("userId") int userId){
+                               @RequestParam("userId") int userId) {
         BaseJson baseJson = new BaseJson();
 
         GroupMemberKey groupMemberKey = new GroupMemberKey();
@@ -223,7 +223,7 @@ public class GroupController {
 
         GroupMember groupMember = groupMemberMapper.selectByPrimaryKey(groupMemberKey);
 
-        if (groupMember == null){
+        if (groupMember == null) {
             groupMember = new GroupMember();
             baseJson.setReturnCode("4.3.E.1");
             baseJson.setErrorMessage("您未提交过入组申请");
@@ -238,16 +238,16 @@ public class GroupController {
     }
 
     //个人用户用：status=0 已加入状态，status=1 加入申请审核状态，status=2 退出申请审核状态
-    @RequestMapping(value = "/quitApply" , method = RequestMethod.POST)
+    @RequestMapping(value = "/quitApply", method = RequestMethod.POST)
     public BaseJson quitApply(@RequestParam("groupId") int groupId,
-                              @RequestParam("userId") int userId){
+                              @RequestParam("userId") int userId) {
         BaseJson baseJson = new BaseJson();
 
         GroupMemberKey groupMemberKey = new GroupMemberKey();
         groupMemberKey.setGroupId(groupId);
         groupMemberKey.setUserId(userId);
         GroupMember groupMember = groupMemberMapper.selectByPrimaryKey(groupMemberKey);
-        if (groupMember == null){
+        if (groupMember == null) {
             groupMember = new GroupMember();
             baseJson.setReturnCode("4.5.E.1");
             baseJson.setErrorMessage("您不是该小组成员");
@@ -263,10 +263,10 @@ public class GroupController {
     }
 
     //企业用，status=0 已加入状态，加入申请审核不通过 status=-1
-    @RequestMapping(value = "/joinCheck" , method = RequestMethod.POST)
+    @RequestMapping(value = "/joinCheck", method = RequestMethod.POST)
     public BaseJson joinCheck(@RequestParam("groupId") int groupId,
                               @RequestParam("userId") int userId,
-                              @RequestParam("isPass") boolean isPass){
+                              @RequestParam("isPass") boolean isPass) {
         BaseJson baseJson = new BaseJson();
 
         GroupMemberKey groupMemberKey = new GroupMemberKey();
@@ -274,16 +274,16 @@ public class GroupController {
         groupMemberKey.setUserId(userId);
         GroupMember groupMember = groupMemberMapper.selectByPrimaryKey(groupMemberKey);
 
-        if (groupMember == null){
+        if (groupMember == null) {
             groupMember = new GroupMember();
             baseJson.setReturnCode("4.4.E.1");
             baseJson.setErrorMessage("该用户并未提交入组申请");
-        } else if (groupMember.getStatus() != 1){
+        } else if (groupMember.getStatus() != 1) {
             baseJson.setReturnCode("4.4.E.2");
             baseJson.setErrorMessage("该用户并不处于等待入组申请审核状态");
-        }else if (isPass){
+        } else if (isPass) {
             GroupInfo group = groupInfoMapper.selectByPrimaryKey(groupId);
-            if (group.getCurrentPeopleNumber() < group.getMaxPeopleNumber()){
+            if (group.getCurrentPeopleNumber() < group.getMaxPeopleNumber()) {
                 groupMember.setStatus(0);
                 groupMemberMapper.updateByPrimaryKeySelective(groupMember);
                 group.setCurrentPeopleNumber(group.getCurrentPeopleNumber() + 1);
@@ -297,7 +297,7 @@ public class GroupController {
                 baseJson.setErrorMessage("小组成员已满，审核失败");
             }
 
-        } else if (!isPass){
+        } else if (!isPass) {
             groupMember.setStatus(-1);
             groupMemberMapper.updateByPrimaryKeySelective(groupMember);
             baseJson.setReturnCode("4.4.0.1");
@@ -309,10 +309,10 @@ public class GroupController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/quitCheck" , method = RequestMethod.POST)
+    @RequestMapping(value = "/quitCheck", method = RequestMethod.POST)
     public BaseJson quitCheck(@RequestParam("groupId") int groupId,
                               @RequestParam("userId") int userId,
-                              @RequestParam("isPass") boolean isPass){
+                              @RequestParam("isPass") boolean isPass) {
         BaseJson baseJson = new BaseJson();
 
         GroupMemberKey groupMemberKey = new GroupMemberKey();
@@ -320,21 +320,21 @@ public class GroupController {
         groupMemberKey.setUserId(userId);
         GroupMember groupMember = groupMemberMapper.selectByPrimaryKey(groupMemberKey);
 
-        if (groupMember == null){
+        if (groupMember == null) {
             groupMember = new GroupMember();
             baseJson.setReturnCode("4.6.E.1");
             baseJson.setErrorMessage("该用户并不是小组成员");
-        } else if (groupMember.getStatus() != 2){
+        } else if (groupMember.getStatus() != 2) {
             baseJson.setReturnCode("4.6.E.2");
             baseJson.setErrorMessage("该用户并不处于等待退组申请审核状态");
-        }else if (isPass){
+        } else if (isPass) {
             GroupInfo group = groupInfoMapper.selectByPrimaryKey(groupId);
             groupMemberMapper.deleteByPrimaryKey(groupMemberKey);
             group.setCurrentPeopleNumber(group.getCurrentPeopleNumber() - 1);
             groupInfoMapper.updateByPrimaryKeySelective(group);
             baseJson.setReturnCode("4.6.0.0");
             baseJson.setErrorMessage("审核通过，该用户退出小组");
-        } else if (!isPass){
+        } else if (!isPass) {
             groupMember.setStatus(0);
             groupMemberMapper.updateByPrimaryKeySelective(groupMember);
             baseJson.setReturnCode("4.6.0.1");
@@ -347,9 +347,9 @@ public class GroupController {
     }
 
     //企业用
-    @RequestMapping(value = "/deleteMember" , method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteMember", method = RequestMethod.POST)
     public BaseJson deleteMember(@RequestParam("groupId") int groupId,
-                                 @RequestParam("userId") int userId){
+                                 @RequestParam("userId") int userId) {
         BaseJson baseJson = new BaseJson();
 
         GroupMemberKey groupMemberKey = new GroupMemberKey();
@@ -357,7 +357,7 @@ public class GroupController {
         groupMemberKey.setUserId(userId);
         GroupMember groupMember = groupMemberMapper.selectByPrimaryKey(groupMemberKey);
 
-        if (groupMember == null || groupMember.getStatus() != 0){
+        if (groupMember == null || groupMember.getStatus() != 0) {
             baseJson.setReturnCode("4.7.E.1");
             baseJson.setErrorMessage("该用户并不是小组成员");
         } else {

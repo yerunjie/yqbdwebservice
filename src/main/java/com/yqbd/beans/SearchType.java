@@ -1,4 +1,6 @@
-package com.yqbd.model;
+package com.yqbd.beans;
+
+import com.yqbd.model.Type;
 
 import java.util.List;
 

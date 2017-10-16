@@ -1,4 +1,4 @@
 mybatis:
   mapperLocations: classpath:mybatis/mapper/*.xml
   typeAliasesPackage: com.yqbd.model
-  configLocation: classpath:mybatis-config.xml
+  configLocation: classpath:mybatis/mybatis-config.xml
