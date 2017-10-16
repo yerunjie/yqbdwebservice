@@ -20,7 +20,6 @@ public class UserController {
     private UserInfoMapper userInfoMapper;
 
 
-
     @RequestMapping(value = "/getUserInfoByUserID")
     public BaseJson getUserInfoByUserID(@RequestParam("userID") int userID) {
         BaseJson baseJson = new BaseJson();
@@ -30,6 +29,7 @@ public class UserController {
         baseJson.setReturnCode("");
         return baseJson;
     }
+
     @RequestMapping(value = "/login")
     public BaseJson login(@RequestParam("accountNumber") String accountNumber, @RequestParam("userPassword") String userPassword) {
         BaseJson baseJson = new BaseJson();

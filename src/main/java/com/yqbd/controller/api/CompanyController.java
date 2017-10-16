@@ -3,6 +3,7 @@ package com.yqbd.controller.api;
 
 import com.yqbd.beans.BaseBean;
 import com.yqbd.beans.BaseJson;
+import com.yqbd.controller.BaseController;
 import com.yqbd.mapper.CompanyInfoMapper;
 import com.yqbd.mapper.GroupInfoMapper;
 import com.yqbd.model.CompanyInfo;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * Created by joy12 on 2017/7/22.
  */
@@ -19,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/company")
-public class CompanyController {
+public class CompanyController extends BaseController {
 
     @Autowired
     private CompanyInfoMapper companyInfoMapper;
@@ -64,8 +67,12 @@ public class CompanyController {
             default://对应正确用例
                 baseJson.setReturnCode("3.0");
                 baseJson.setErrorMessage("成功");
+                HttpSession session = request.getSession();
+                session.setAttribute("companyId", result);
                 break;
         }
         return baseJson;
     }
+
+
 }

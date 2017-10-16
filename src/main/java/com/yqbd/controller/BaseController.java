@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by 11022 on 2017/7/21.
@@ -23,4 +24,10 @@ public class BaseController {
 
     public static final String ROOT = "image";
 
+
+    public int getCurrentCompanyId(){
+        HttpSession session = request.getSession();
+        int companyId = (int)session.getAttribute("companyId");
+        return companyId;
+    }
 }

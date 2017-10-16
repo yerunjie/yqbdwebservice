@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -202,6 +204,56 @@ public class TaskController extends BaseController {
             baseJson.setErrorMessage("已经申请");
         }
         baseJson.setObj(userTake);
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/singleTask")
+    public BaseJson takeTask(@RequestParam("taskId") String taskId) {
+        BaseJson baseJson = new BaseJson();
+        HttpSession session = request.getSession();
+        session.setAttribute("taskId", taskId);
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/editTask")
+    public BaseJson editTask(@RequestParam("taskId") String taskId,
+                             @RequestParam("taskTitle") String taskTitle,
+                             @RequestParam("taskDescription") String taskDescription,
+                             @RequestParam("pay") String pay,
+                             @RequestParam("publishTime") String publishTime,
+                             @RequestParam("deadline") String deadline,
+                             @RequestParam("startTime") String startTime,
+                             @RequestParam("completeTime") String completeTime,
+                             @RequestParam("maxPeopleNumber") String maxPeopleNumber,
+                             @RequestParam("taskAddress") String taskAddress
+    ) throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Task task = taskMapper.selectByPrimaryKey(Integer.valueOf(taskId));
+        task.setTaskId(Integer.valueOf(taskId));
+        task.setTaskTitle(taskTitle);
+        task.setTaskDescription(taskDescription);
+        task.setPay(Double.valueOf(pay.replace(",", "")));
+        task.setPublishTime(sdf.parse(publishTime));
+        task.setDeadline(sdf.parse(deadline));
+        task.setStartTime(sdf.parse(startTime));
+        task.setCompleteTime(sdf.parse(completeTime));
+        task.setMaxPeopleNumber(Integer.valueOf(maxPeopleNumber));
+        task.setTaskAddress(taskAddress);
+        taskMapper.updateByPrimaryKeyWithBLOBs(task);
+        BaseJson baseJson = new BaseJson();
+        HttpSession session = request.getSession();
+        session.setAttribute("taskId", taskId);
+        return baseJson;
+    }
+
+
+    @RequestMapping(value = "/deleteTask")
+    public BaseJson editTask(@RequestParam("taskId") String taskId) {
+        int companyId = taskMapper.selectByPrimaryKey(Integer.valueOf(taskId)).getCompanyId();
+        taskMapper.deleteByPrimaryKey(Integer.valueOf(taskId));
+        BaseJson baseJson = new BaseJson();
+        HttpSession session = request.getSession();
+        session.setAttribute("companyId", companyId);
         return baseJson;
     }
 

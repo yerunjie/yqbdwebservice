@@ -129,4 +129,9 @@ public interface TaskMapper {
     @ResultMap("ResultMapWithBLOBs")
     List<Task> getSearchTasks(List<Integer> list);
 
+    @Select({
+            " select * from task where company_id=#{company_id,jdbcType=INTEGER}"
+    })
+    @ResultMap("ResultMapWithBLOBs")
+    List<Task> getPublishedTasksByCompanyId(Integer company_id);
 }
