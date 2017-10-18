@@ -61,6 +61,25 @@ public class UserController {
         }
         return baseJson;
     }
+    @RequestMapping(value = "/register")
+    public BaseJson register(@RequestParam("accountNumber") String accountNumber, @RequestParam("userPassword") String userPassword,
+                          @RequestParam("realName") String realName){
+        BaseJson baseJson = new BaseJson();
+
+        UserInfo userInfo = new UserInfo();
+        userInfo.setAccountNumber(accountNumber);
+        userInfo.setPassword(userPassword);
+        userInfo.setRealName(realName);
+        userInfoMapper.insertSelective(userInfo);
+        BaseBean baseBean = new BaseBean();
+        int result;
+        result = userInfo.getUserId();
+        baseBean.setSingleResult(String.valueOf(result));
+        baseJson.setObj(baseBean);
+        baseJson.setReturnCode("2.0");
+        baseJson.setErrorMessage("成功");
+        return baseJson;
+    }
 
 
 }

@@ -16,7 +16,7 @@
     user_id, account_number, password, sex, real_name, nick_name, head_portrait, professional_level,
     credit_level
   </sql>
-  <insert id="insertSelective" parameterType="com.yqbd.model.UserInfo" >
+  <insert id="insertSelective" parameterType="com.yqbd.model.UserInfo" useGeneratedKeys="true" keyProperty="userId" >
     insert into user_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
