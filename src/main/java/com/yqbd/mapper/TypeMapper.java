@@ -49,4 +49,10 @@ public interface TypeMapper {
 
     @ResultMap("BaseResultMap")
     List<Integer> getSearchType(String[] list);
+
+    @Select(
+            "SELECT * FROM type where type_id in (select type_id from task_type where task_id = #{taskId})"
+    )
+    @ResultMap("BaseResultMap")
+    List<Type> selectTypesByTaskId(Integer taskId);
 }

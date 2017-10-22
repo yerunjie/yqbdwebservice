@@ -25,6 +25,7 @@ public class TaskBean implements Serializable {
     private Integer taskStatus;
     private Long publishTime;
     private Long completeTime;
+    private Long startTime;
     private Integer maxPeopleNumber;
     private Long deadline;
 
@@ -32,5 +33,8 @@ public class TaskBean implements Serializable {
     private Integer isGroup;
     private List<TypeBean> typeBeans;
     private String name;
-
+    private String primaryWork;
+    private String otherCompany;
+    private String primaryContact;
+    private String remark;
 }

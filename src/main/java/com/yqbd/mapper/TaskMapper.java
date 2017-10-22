@@ -41,15 +41,11 @@ public interface TaskMapper {
     int insertSelective(Task record);
 
     @Select({
-            "select",
-            "task_id, company_id, user_id, classification, task_title, task_status, pay, ",
-            "publish_time, deadline, start_time, complete_time, sign_up_people_number, current_people_number, ",
-            "max_people_number, simple_drawing_address, group_id, province, city, district, ",
-            "task_address, task_description",
+            "select *",
             "from task",
             "where task_id = #{taskId,jdbcType=INTEGER}"
     })
-    @ResultMap("ResultMapWithBLOBs")
+    @ResultType(Task.class)
     Task selectByPrimaryKey(Integer taskId);
 
     int updateByPrimaryKeySelective(Task record);
@@ -75,7 +71,10 @@ public interface TaskMapper {
             "city = #{city,jdbcType=VARCHAR},",
             "district = #{district,jdbcType=VARCHAR},",
             "task_address = #{taskAddress,jdbcType=VARCHAR},",
-            "task_description = #{taskDescription,jdbcType=LONGVARCHAR}",
+            "task_description = #{taskDescription,jdbcType=LONGVARCHAR},",
+            "other_company = #{otherCompany,jdbcType=VARCHAR},",
+            "primary_work = #{primaryWork,jdbcType=VARCHAR},",
+            "primary_contact = #{primaryContact,jdbcType=VARCHAR}",
             "where task_id = #{taskId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKeyWithBLOBs(Task record);
@@ -100,7 +99,10 @@ public interface TaskMapper {
             "province = #{province,jdbcType=VARCHAR},",
             "city = #{city,jdbcType=VARCHAR},",
             "district = #{district,jdbcType=VARCHAR},",
-            "task_address = #{taskAddress,jdbcType=VARCHAR}",
+            "task_address = #{taskAddress,jdbcType=VARCHAR},",
+            "other_company = #{otherCompany,jdbcType=VARCHAR},",
+            "primary_work = #{primaryWork,jdbcType=VARCHAR},",
+            "primary_contact = #{primaryContact,jdbcType=VARCHAR}",
             "where task_id = #{taskId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(Task record);
@@ -109,29 +111,41 @@ public interface TaskMapper {
     @Select({
             " select * from task where user_id = #{userId,jdbcType=INTEGER}"
     })
-    @ResultMap("ResultMapWithBLOBs")
+    @ResultType(Task.class)
     List<Task> getPublishedTasksByUserId(Integer userId);
 
     @Select({
             " select * from task where task_id in (SELECT task_id from user_take WHERE user_id= #{userId,jdbcType=INTEGER})"
     })
-    @ResultMap("ResultMapWithBLOBs")
+    @ResultType(Task.class)
     List<Task> getTakenTasksByUserId(Integer userId);
 
 
     @Select({
-            "  SELECT * FROM task"
+            "SELECT * FROM task"
     })
 
-    @ResultMap("ResultMapWithBLOBs")
+    @ResultType(Task.class)
     List<Task> selectAllTasks();
 
-    @ResultMap("ResultMapWithBLOBs")
+    @ResultType(Task.class)
     List<Task> getSearchTasks(List<Integer> list);
 
     @Select({
-            " select * from task where company_id=#{company_id,jdbcType=INTEGER}"
+            "select * from task where company_id = #{company_id,jdbcType=INTEGER}"
     })
-    @ResultMap("ResultMapWithBLOBs")
+    @ResultType(Task.class)
     List<Task> getPublishedTasksByCompanyId(Integer company_id);
+
+    @Select({
+            "select * from task where task_id in (select task_id from user_collect where user_id = #{userId})"
+    })
+    @ResultType(Task.class)
+    List<Task> getCollectedTasks(Integer userId);
+
+    @Select({
+            "select * from task where company_id = #{companyId}"
+    })
+    @ResultType(Task.class)
+    List<Task> getCompanyTasks(Integer companyId);
 }

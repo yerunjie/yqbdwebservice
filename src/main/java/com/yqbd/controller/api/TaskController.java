@@ -1,14 +1,12 @@
 package com.yqbd.controller.api;
 
 
+import com.google.common.collect.Lists;
 import com.yqbd.beans.*;
 import com.yqbd.constants.TaskStatus;
 import com.yqbd.constants.UserTaskStatus;
 import com.yqbd.controller.BaseController;
-import com.yqbd.mapper.TaskMapper;
-import com.yqbd.mapper.TaskTypeMapper;
-import com.yqbd.mapper.TypeMapper;
-import com.yqbd.mapper.UserTakeMapper;
+import com.yqbd.mapper.*;
 import com.yqbd.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +41,9 @@ public class TaskController extends BaseController {
     @Autowired
     protected TaskTypeMapper taskTypeMapper;
 
+    @Autowired
+    protected UserCollectMapper userCollectMapper;
+
     @RequestMapping(value = "/getAllTypes")
     public BaseJson getAllTypes() {
         BaseJson baseJson = new BaseJson();
@@ -55,7 +56,22 @@ public class TaskController extends BaseController {
     public BaseJson getAllTasks() {
         BaseJson baseJson = new BaseJson();
         List<Task> tasks = taskMapper.selectAllTasks();
-        baseJson.setObj(tasks);
+        baseJson.setObj(Lists.transform(tasks, this::parse));
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/getCollectedTasks")
+    public BaseJson getCollectedTasks(@RequestParam("userId") int userId) {
+        BaseJson baseJson = new BaseJson();
+        List<Task> tasks = taskMapper.getCollectedTasks(userId);
+        baseJson.setObj(Lists.transform(tasks, this::parse));
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/getCompanyTasks")
+    public BaseJson getCompanyTasks(@RequestParam("companyId") int companyId) {
+        BaseJson baseJson = new BaseJson();
+        baseJson.setObj(Lists.transform(taskMapper.getCompanyTasks(companyId), this::parse));
         return baseJson;
     }
 
@@ -288,4 +304,49 @@ public class TaskController extends BaseController {
         return baseJson;
     }
 
+    @RequestMapping(value = "/isCollected")
+    public BaseJson isCollected(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
+        BaseJson baseJson = new BaseJson();
+        UserCollectKey userTakeKey = new UserCollectKey();
+        userTakeKey.setUserId(userId);
+        userTakeKey.setTaskId(taskId);
+        UserCollectKey userTake = userCollectMapper.selectByPrimaryKey(userTakeKey);
+        BaseBean baseBean = new BaseBean(Objects.nonNull(userTake));
+        baseJson.setObj(baseBean);
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/collect")
+    public BaseJson collect(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
+        BaseJson baseJson = new BaseJson();
+        UserCollectKey userCollectKey = new UserCollectKey();
+        userCollectKey.setUserId(userId);
+        userCollectKey.setTaskId(taskId);
+        UserCollectKey userTake = userCollectMapper.selectByPrimaryKey(userCollectKey);
+        if (Objects.nonNull(userTake)) {
+            userCollectMapper.deleteByPrimaryKey(userCollectKey);
+        } else {
+            userCollectMapper.insert(userCollectKey);
+        }
+        BaseBean baseBean = new BaseBean(Objects.isNull(userTake));
+        baseJson.setObj(baseBean);
+        return baseJson;
+    }
+
+    private TaskBean parse(Task task) {
+        TaskBean taskBean = new TaskBean();
+        BeanUtils.copyProperties(task, taskBean);
+        taskBean.setPublishTime(task.getPublishTime().getTime());
+        taskBean.setCompleteTime(task.getCompleteTime().getTime());
+        taskBean.setStartTime(task.getStartTime().getTime());
+        taskBean.setDeadline(task.getDeadline().getTime());
+        taskBean.setTypeBeans(Lists.transform(typeMapper.selectTypesByTaskId(taskBean.getTaskId()), this::parse));
+        return taskBean;
+    }
+
+    private TypeBean parse(Type type) {
+        TypeBean result = new TypeBean();
+        BeanUtils.copyProperties(type, result);
+        return result;
+    }
 }

@@ -1,11 +1,9 @@
 package com.yqbd.mapper;
 
-        import com.yqbd.model.CompanyInfo;
-        import org.apache.ibatis.annotations.Delete;
-        import org.apache.ibatis.annotations.Insert;
-        import org.apache.ibatis.annotations.ResultMap;
-        import org.apache.ibatis.annotations.Select;
-        import org.apache.ibatis.annotations.Update;
+import com.yqbd.model.CompanyInfo;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 public interface CompanyInfoMapper {
     @Delete({
@@ -17,18 +15,17 @@ public interface CompanyInfoMapper {
     @Insert({
             "insert into company_info (company_id, company_name, ",
             "company_account, password, ",
-            "classification, summary)",
+            "classification, summary, head_portrait_address)",
             "values (#{companyId,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, ",
             "#{companyAccount,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, ",
-            "#{classification,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR})"
+            "#{classification,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{headPortraitAddress,jdbcType=VARCHAR})"
     })
     int insert(CompanyInfo record);
 
     int insertSelective(CompanyInfo record);
 
     @Select({
-            "select",
-            "company_id, company_name, company_account, password, classification, summary",
+            "select *",
             "from company_info",
             "where company_id = #{companyId,jdbcType=INTEGER}"
     })
@@ -43,14 +40,19 @@ public interface CompanyInfoMapper {
             "company_account = #{companyAccount,jdbcType=VARCHAR},",
             "password = #{password,jdbcType=VARCHAR},",
             "classification = #{classification,jdbcType=VARCHAR},",
-            "summary = #{summary,jdbcType=VARCHAR}",
+            "summary = #{summary,jdbcType=VARCHAR},",
+            "head_portrait_address = #{headPortraitAddress,jdbcType=VARCHAR}",
             "where company_id = #{companyId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(CompanyInfo record);
 
     @Select(
-            "SELECT * FROM company_info WHERE company_account=#{accountNumber,jdbcType=VARCHAR}  "
+            "SELECT * FROM company_info WHERE company_account = #{accountNumber,jdbcType=VARCHAR}  "
     )
     @ResultMap("BaseResultMap")
     CompanyInfo selectByCompanyAccount(String accountNumber);
+
+    @Select("select * from company_info")
+    @ResultType(CompanyInfo.class)
+    List<CompanyInfo> getAllCompanies();
 }

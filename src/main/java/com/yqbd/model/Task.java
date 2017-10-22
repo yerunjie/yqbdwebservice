@@ -50,4 +50,11 @@ public class Task {
 
     private String taskDescription;
 
+    private String primaryWork;
+
+    private String otherCompany;
+
+    private String primaryContact;
+
+    private String remark;
 }

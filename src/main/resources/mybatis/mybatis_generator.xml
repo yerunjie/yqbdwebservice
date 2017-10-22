@@ -5,7 +5,7 @@
 <generatorConfiguration>
     <!--<properties resource="jdbc.properties"/>-->
     <!-- !!!! Driver Class Path !!!! -->
-    <classPathEntry location="C:\Program Files\eclipse\mysql-connector-java-5.1.39-bin.jar"/>
+    <classPathEntry location="/Users/yerunjie/IdeaProjects/jar/mysql-connector-java-5.1.18.jar"/>
 
     <context id="context" targetRuntime="MyBatis3">
         <commentGenerator>
@@ -15,9 +15,9 @@
 
         <!-- !!!! Database Configurations !!!! -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://595203d87cdf5.sh.cdb.myqcloud.com:17828/yqbd?characterEncoding=UTF8"
+                        connectionURL="jdbc:mysql://localhost:3306/yqbd"
                         userId="root"
-                        password="chuangxin2016">
+                        password="123456">
         </jdbcConnection>
 
         <javaTypeResolver>
@@ -36,12 +36,12 @@
         </sqlMapGenerator>
 
         <!-- !!!! Mapper Interface Configurations !!!! -->
-        <javaClientGenerator targetPackage="com.yqbd.mapper" targetProject="THIS_CONFIGURATION_IS_NOT_REQUIRED" type="XMLMAPPER">
+        <javaClientGenerator targetPackage="com.yqbd.mapper" targetProject="THIS_CONFIGURATION_IS_NOT_REQUIRED" type="MIXEDMAPPER">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
         <!-- !!!! Table Configurations !!!! -->
-        <table tableName="%" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+        <table tableName="user_info" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false"/>
     </context>
 </generatorConfiguration>
