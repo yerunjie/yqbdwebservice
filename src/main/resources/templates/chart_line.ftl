@@ -146,13 +146,23 @@
 				</div>
 				
 				<div class="am-g">
-					<div class="am-u-md-12">
+					<div class="am-u-md-6">
 						<!-- 动态数据+时间坐标轴 -->
 						<div class="card-box">
 							<div  id="trends" style="width: 100%;height: 300px;"></div>
 						</div>
 					</div>
+                    <div class="am-u-md-6">
+                        <!-- 人数 -->
+                        <div class="card-box">
+                            <div  id="trends_number" style="width: 100%;height: 300px;"></div>
+                        </div>
+                    </div>
 				</div>
+
+
+
+
 			</div>
 		</div>
 		<!-- end right Content here -->
