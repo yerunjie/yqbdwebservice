@@ -3,10 +3,12 @@ package com.yqbd.controller.api;
 
 import com.yqbd.beans.BaseBean;
 import com.yqbd.beans.BaseJson;
+import com.yqbd.beans.CompanyInfoBean;
 import com.yqbd.controller.BaseController;
 import com.yqbd.mapper.CompanyInfoMapper;
 import com.yqbd.mapper.GroupInfoMapper;
 import com.yqbd.model.CompanyInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by joy12 on 2017/7/22.
@@ -30,11 +34,11 @@ public class CompanyController extends BaseController {
     @Autowired
     private GroupInfoMapper groupInfoMapper;
 
-    @RequestMapping(value = "/getCompanyInfoByCompanyId", method = RequestMethod.POST)
+    @RequestMapping(value = "/getCompanyInfoByCompanyId")
     public BaseJson getCompanyInfoByCompanyId(@RequestParam("companyId") int companyId) {
         BaseJson baseJson = new BaseJson();
         CompanyInfo companyInfo = companyInfoMapper.selectByPrimaryKey(companyId);
-        baseJson.setObj(companyInfo);
+        baseJson.setObj(parse(companyInfo));
         return baseJson;
     }
 
@@ -74,5 +78,17 @@ public class CompanyController extends BaseController {
         return baseJson;
     }
 
+    @RequestMapping(value = "/getAllCompanies")
+    public BaseJson getAllCompanies() {
+        BaseJson baseJson = new BaseJson();
+        List<CompanyInfo> companyInfoList = companyInfoMapper.getAllCompanies();
+        baseJson.setObj(companyInfoList.stream().map(this::parse).collect(Collectors.toList()));
+        return baseJson;
+    }
 
+    private CompanyInfoBean parse(CompanyInfo companyInfo) {
+        CompanyInfoBean result = new CompanyInfoBean();
+        BeanUtils.copyProperties(companyInfo, result);
+        return result;
+    }
 }

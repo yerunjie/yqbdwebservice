@@ -1,11 +1,11 @@
-package com.yqbd.model;
+package com.yqbd.beans;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserInfo {
+public class UserInfoBean {
     private Integer userId;
 
     private String accountNumber;

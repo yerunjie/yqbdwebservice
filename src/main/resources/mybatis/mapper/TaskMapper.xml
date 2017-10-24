@@ -22,6 +22,9 @@
         <result column="city" property="city" jdbcType="VARCHAR"/>
         <result column="district" property="district" jdbcType="VARCHAR"/>
         <result column="task_address" property="taskAddress" jdbcType="VARCHAR"/>
+        <result column="primary_work" property="primaryWork" jdbcType="VARCHAR"/>
+        <result column="other_company" property="otherCompany" jdbcType="VARCHAR"/>
+        <result column="primary_contact" property="primaryContact" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="ResultMapWithBLOBs" type="com.yqbd.model.Task" extends="BaseResultMap">
         <result column="task_description" property="taskDescription" jdbcType="LONGVARCHAR"/>
@@ -29,7 +32,7 @@
     <sql id="Base_Column_List">
         task_id, company_id, user_id, classification, task_title, task_status, pay, publish_time,
         deadline, start_time, complete_time, sign_up_people_number, current_people_number,
-        max_people_number, simple_drawing_address, group_id, province, city, district, task_address
+        max_people_number, simple_drawing_address, group_id, province, city, district, task_address, primary_work, other_company, primary_contact
     </sql>
     <sql id="Blob_Column_List">
         task_description
@@ -100,6 +103,15 @@
             <if test="taskDescription != null">
                 task_description,
             </if>
+            <if test="otherCompany != null">
+                other_company,
+            </if>
+            <if test="primaryWork != null">
+                primary_work,
+            </if>
+            <if test="primaryContact != null">
+                primary_contact,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="taskId != null">
@@ -165,6 +177,15 @@
             <if test="taskDescription != null">
                 #{taskDescription,jdbcType=LONGVARCHAR},
             </if>
+            <if test="otherCompany != null">
+                #{otherCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="primaryWork != null">
+                #{primaryWork,jdbcType=VARCHAR},
+            </if>
+            <if test="primaryContact != null">
+                #{primaryContact,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.yqbd.model.Task">
@@ -229,6 +250,15 @@
             </if>
             <if test="taskDescription != null">
                 task_description = #{taskDescription,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="otherCompany != null">
+                other_company = #{otherCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="primaryWork != null">
+                primary_work = #{primaryWork,jdbcType=VARCHAR},
+            </if>
+            <if test="primaryContact != null">
+                #{primaryContact,jdbcType=VARCHAR},
             </if>
         </set>
         where task_id = #{taskId,jdbcType=INTEGER}

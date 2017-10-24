@@ -22,6 +22,11 @@ public class ResourceController extends BaseController {
     @Autowired
     private ResourceLoader resourceLoader;
 
+    @RequestMapping("fileupload")
+    public String getFile() {
+        return "upload";
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/{filename:.+}")
     @ResponseBody
     public ResponseEntity<?> getFile(@PathVariable String filename) {
@@ -34,12 +39,13 @@ public class ResourceController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/upload")
     @ResponseBody
-    public Map<String, Object> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("companyId") Integer companyId) {
+    public Map<String, Object> handleFileUpload(@RequestParam("file") MultipartFile file) {
         Map<String, Object> map = Maps.newHashMap();
         if (!file.isEmpty()) {
             try {
-                String filePath = request.getSession().getServletContext().getRealPath("/image");
-                String fileName = new Date().getTime() + file.getOriginalFilename();
+                String filePath = request.getSession().getServletContext().getRealPath("/images");
+                System.out.println(filePath);
+                String fileName = file.getOriginalFilename();
                 uploadFile(file.getBytes(), filePath, fileName);
                 //Files.copy(file.getInputStream(), Paths.get(ROOT, file.getOriginalFilename()));
                 map.put("message", "上传成功");
