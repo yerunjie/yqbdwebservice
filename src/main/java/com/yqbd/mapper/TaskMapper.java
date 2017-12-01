@@ -143,6 +143,14 @@ public interface TaskMapper {
     @ResultType(Task.class)
     List<Task> getCollectedTasks(Integer userId);
 
+
+    @Select({
+            "select * from task where task_id in (select task_id from user_take where user_id = #{userId})"
+    })
+    @ResultType(Task.class)
+    List<Task> getAcceptTasks(Integer userId);
+
+
     @Select({
             "select * from task where company_id = #{companyId}"
     })

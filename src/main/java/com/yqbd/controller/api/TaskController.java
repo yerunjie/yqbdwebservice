@@ -60,6 +60,14 @@ public class TaskController extends BaseController {
         return baseJson;
     }
 
+    @RequestMapping(value = "/getAcceptTasks")
+    public BaseJson getAcceptTasks(@RequestParam("userId") int userId) {
+        BaseJson baseJson = new BaseJson();
+        List<Task> tasks = taskMapper.getAcceptTasks(userId);
+        baseJson.setObj(Lists.transform(tasks, this::parse));
+        return baseJson;
+    }
+
     @RequestMapping(value = "/getCollectedTasks")
     public BaseJson getCollectedTasks(@RequestParam("userId") int userId) {
         BaseJson baseJson = new BaseJson();
