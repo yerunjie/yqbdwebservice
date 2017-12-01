@@ -178,6 +178,7 @@ public class TaskController extends BaseController {
         System.out.println("task" + taskId + "已删除");
     }
 
+
     @RequestMapping(value = "/getSearch")
     public BaseJson getSearch(@RequestParam("map") String map) {
         System.out.println(map);
@@ -357,4 +358,6 @@ public class TaskController extends BaseController {
         BeanUtils.copyProperties(type, result);
         return result;
     }
+
+
 }

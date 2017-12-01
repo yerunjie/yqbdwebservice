@@ -183,8 +183,9 @@
                                                         onclick="editTask(${task.taskId});return false;"><span
                                                         class="am-icon-pencil-square-o"></span> 编辑
                                                 </button>
-                                                <button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><span
-                                                        class="am-icon-copy"></span> 复制
+                                                <button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"
+                                                        onclick="showParticipant(${task.taskId});return false;"><span
+                                                        class="am-icon-copy"></span> 申请者
                                                 </button>
                                                 <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"
                                                         onclick="deleteTask(${task.taskId})">
@@ -198,7 +199,7 @@
                                 </tbody>
                             </table>
                             <div class="am-cf">
-                                共 2 条记录
+                                共 ${taskList?size} 条记录
                                 <div class="am-fr">
                                     <ul class="am-pagination">
                                         <li class="am-disabled"><a href="#">«</a></li>
@@ -301,6 +302,23 @@
             }
         })
     }
+    function showParticipant(x) {
+        var account = x;
+        $.ajax({
+            type: "post",
+            url: "/task/setTask",
+            timeout: 8000,
+            dataType: "json",
+            data: {
+                "taskId": account
+            },
+            success: function (data) {
+                window.location.href = "/webCompany/showParticipant";
+            },
+            error: function () {
+                alert("请求出错");
+            }
+        })
     function postTask() {
         window.location.href = "/webCompany/post_task";
 

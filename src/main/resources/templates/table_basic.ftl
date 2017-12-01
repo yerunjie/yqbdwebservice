@@ -117,7 +117,7 @@
 			<div class="content">
 				<div class="am-g">
 					<!-- Row start -->
-						<div class="am-u-sm-6">
+						<div class="am-u-sm-12">
 							<div class="card-box">
 								<!-- col start -->
 								<table class="am-table">
@@ -154,146 +154,135 @@
 								            <td>http://amazeui.org</td>
 								            <td>2012-10-01</td>
 								        </tr>
+                                        <tr>
+                                            <td>Amaze UI</td>
+                                            <td>http://amazeui.org</td>
+                                            <td>2012-10-01</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Amaze UI</td>
+                                            <td>http://amazeui.org</td>
+                                            <td>2012-10-01</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Amaze UI</td>
+                                            <td>http://amazeui.org</td>
+                                            <td>2012-10-01</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Amaze UI</td>
+                                            <td>http://amazeui.org</td>
+                                            <td>2012-10-01</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Amaze UI</td>
+                                            <td>http://amazeui.org</td>
+                                            <td>2012-10-01</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Amaze UI</td>
+                                            <td>http://amazeui.org</td>
+                                            <td>2012-10-01</td>
+                                        </tr>
 								    </tbody>
 								</table>
 								<!-- col end -->
 							</div>
 						</div>
 
-						<div class="am-u-sm-6">
-							<div class="card-box">
-								<!-- col start -->
-									<table class="am-table  am-table-hover">
-								    <thead>
-								        <tr>
-								            <th>网站名称</th>
-								            <th>网址</th>
-								            <th>创建时间</th>
-								        </tr>
-								    </thead>
-								    <tbody>
-								        <tr>
-								            <td>Amaze UI</td>
-								            <td>http://amazeui.org</td>
-								            <td>2012-10-01</td>
-								        </tr>
-								        <tr>
-								            <td>Amaze UI</td>
-								            <td>http://amazeui.org</td>
-								            <td>2012-10-01</td>
-								        </tr>
-								        <tr>
-								            <td>Amaze UI</td>
-								            <td>http://amazeui.org</td>
-								            <td>2012-10-01</td>
-								        </tr>
-								        <tr>
-								            <td>Amaze UI</td>
-								            <td>http://amazeui.org</td>
-								            <td>2012-10-01</td>
-								        </tr>
-								        <tr>
-								            <td>Amaze UI</td>
-								            <td>http://amazeui.org</td>
-								            <td>2012-10-01</td>
-								        </tr>
-								    </tbody>
-								</table>
-								<!-- col end -->
-							</div>
-						</div>
+
 					<!-- Row end -->
 				</div>
 
-				<!-- row start -->
-				<div class="am-g">
-					<!-- col start -->
-					<div class="am-u-md-6">
-						<div class="card-box">
-							<table class="am-table am-table-bordered">
-								    <thead>
-								        <tr>
-								            <th>网站名称</th>
-								            <th>网址</th>
-								            <th>创建时间</th>
-								        </tr>
-								    </thead>
-								    <tbody>
-								        <tr>
-								            <td>Amaze UI</td>
-								            <td>http://amazeui.org</td>
-								            <td>2012-10-01</td>
-								        </tr>
-								        <tr>
-								            <td>Amaze UI</td>
-								            <td>http://amazeui.org</td>
-								            <td>2012-10-01</td>
-								        </tr>
-								        <tr>
-								            <td>Amaze UI</td>
-								            <td>http://amazeui.org</td>
-								            <td>2012-10-01</td>
-								        </tr>
-								        <tr>
-								            <td>Amaze UI</td>
-								            <td>http://amazeui.org</td>
-								            <td>2012-10-01</td>
-								        </tr>
-								        <tr>
-								            <td>Amaze UI</td>
-								            <td>http://amazeui.org</td>
-								            <td>2012-10-01</td>
-								        </tr>
-								    </tbody>
-								</table>
-						</div>
-					</div>
-					<!-- col end -->
+				<#--<!-- row start &ndash;&gt;-->
+				<#--<div class="am-g">-->
+					<#--<!-- col start &ndash;&gt;-->
+					<#--<div class="am-u-md-6">-->
+						<#--<div class="card-box">-->
+							<#--<table class="am-table am-table-bordered">-->
+								    <#--<thead>-->
+								        <#--<tr>-->
+								            <#--<th>网站名称</th>-->
+								            <#--<th>网址</th>-->
+								            <#--<th>创建时间</th>-->
+								        <#--</tr>-->
+								    <#--</thead>-->
+								    <#--<tbody>-->
+								        <#--<tr>-->
+								            <#--<td>Amaze UI</td>-->
+								            <#--<td>http://amazeui.org</td>-->
+								            <#--<td>2012-10-01</td>-->
+								        <#--</tr>-->
+								        <#--<tr>-->
+								            <#--<td>Amaze UI</td>-->
+								            <#--<td>http://amazeui.org</td>-->
+								            <#--<td>2012-10-01</td>-->
+								        <#--</tr>-->
+								        <#--<tr>-->
+								            <#--<td>Amaze UI</td>-->
+								            <#--<td>http://amazeui.org</td>-->
+								            <#--<td>2012-10-01</td>-->
+								        <#--</tr>-->
+								        <#--<tr>-->
+								            <#--<td>Amaze UI</td>-->
+								            <#--<td>http://amazeui.org</td>-->
+								            <#--<td>2012-10-01</td>-->
+								        <#--</tr>-->
+								        <#--<tr>-->
+								            <#--<td>Amaze UI</td>-->
+								            <#--<td>http://amazeui.org</td>-->
+								            <#--<td>2012-10-01</td>-->
+								        <#--</tr>-->
+								    <#--</tbody>-->
+								<#--</table>-->
+						<#--</div>-->
+					<#--</div>-->
+					<#--<!-- col end &ndash;&gt;-->
 
-					<!-- col start -->
-					<div class="am-u-md-6">
-						<div class="card-box">
-							<table class="am-table  am-table-striped">
-								    <thead>
-								        <tr>
-								            <th>网站名称</th>
-								            <th>网址</th>
-								            <th>创建时间</th>
-								        </tr>
-								    </thead>
-								    <tbody>
-								        <tr>
-								            <td>Amaze UI</td>
-								            <td>http://amazeui.org</td>
-								            <td>2012-10-01</td>
-								        </tr>
-								        <tr>
-								            <td>Amaze UI</td>
-								            <td>http://amazeui.org</td>
-								            <td>2012-10-01</td>
-								        </tr>
-								        <tr>
-								            <td>Amaze UI</td>
-								            <td>http://amazeui.org</td>
-								            <td>2012-10-01</td>
-								        </tr>
-								        <tr>
-								            <td>Amaze UI</td>
-								            <td>http://amazeui.org</td>
-								            <td>2012-10-01</td>
-								        </tr>
-								        <tr>
-								            <td>Amaze UI</td>
-								            <td>http://amazeui.org</td>
-								            <td>2012-10-01</td>
-								        </tr>
-								    </tbody>
-								</table>
-						</div>
-					</div>
-					<!-- col end -->
-				</div>
-				<!-- row end -->
+					<#--<!-- col start &ndash;&gt;-->
+					<#--<div class="am-u-md-6">-->
+						<#--<div class="card-box">-->
+							<#--<table class="am-table  am-table-striped">-->
+								    <#--<thead>-->
+								        <#--<tr>-->
+								            <#--<th>网站名称</th>-->
+								            <#--<th>网址</th>-->
+								            <#--<th>创建时间</th>-->
+								        <#--</tr>-->
+								    <#--</thead>-->
+								    <#--<tbody>-->
+								        <#--<tr>-->
+								            <#--<td>Amaze UI</td>-->
+								            <#--<td>http://amazeui.org</td>-->
+								            <#--<td>2012-10-01</td>-->
+								        <#--</tr>-->
+								        <#--<tr>-->
+								            <#--<td>Amaze UI</td>-->
+								            <#--<td>http://amazeui.org</td>-->
+								            <#--<td>2012-10-01</td>-->
+								        <#--</tr>-->
+								        <#--<tr>-->
+								            <#--<td>Amaze UI</td>-->
+								            <#--<td>http://amazeui.org</td>-->
+								            <#--<td>2012-10-01</td>-->
+								        <#--</tr>-->
+								        <#--<tr>-->
+								            <#--<td>Amaze UI</td>-->
+								            <#--<td>http://amazeui.org</td>-->
+								            <#--<td>2012-10-01</td>-->
+								        <#--</tr>-->
+								        <#--<tr>-->
+								            <#--<td>Amaze UI</td>-->
+								            <#--<td>http://amazeui.org</td>-->
+								            <#--<td>2012-10-01</td>-->
+								        <#--</tr>-->
+								    <#--</tbody>-->
+								<#--</table>-->
+						<#--</div>-->
+					<#--</div>-->
+					<#--<!-- col end &ndash;&gt;-->
+				<#--</div>-->
+				<#--<!-- row end &ndash;&gt;-->
 
 
 			</div>
