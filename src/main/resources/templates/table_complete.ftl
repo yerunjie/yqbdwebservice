@@ -246,9 +246,7 @@
 </html>
 <script type="text/javascript">
     function singleTask(x) {
-        alert(2);
         var account = x;
-        alert(1);
         $.ajax({
             type: "post",
             url: "/task/singleTask",
@@ -308,7 +306,7 @@
         var account = x;
         $.ajax({
             type: "post",
-            url: "/task/setTask",
+            url: "/task/showParticipant",
             timeout: 8000,
             dataType: "json",
             data: {

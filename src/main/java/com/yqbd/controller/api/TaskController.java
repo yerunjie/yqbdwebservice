@@ -377,7 +377,17 @@ public class TaskController extends BaseController {
         return baseJson;
     }
 
+    @RequestMapping(value="/showParticipant")
+    public BaseJson showParticipant(@RequestParam("taskId") int taskId){
+        BaseJson baseJson = new BaseJson();
+        BaseBean baseBean = new BaseBean();
+        baseBean.setSingleResult(String.valueOf("taskId"));
+        baseJson.setObj(baseBean);
+        HttpSession session = request.getSession();
+        session.setAttribute("taskId", taskId);
+        return baseJson;
 
+    }
     private TaskBean parse(Task task) {
         TaskBean taskBean = new TaskBean();
         BeanUtils.copyProperties(task, taskBean);

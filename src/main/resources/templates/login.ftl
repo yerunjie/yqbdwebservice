@@ -75,11 +75,13 @@
             },
 
             success:function(data){
-                if(data.returnCode==="0"){
+                if(data.returnCode==="3.0.E.2"){
                     alert("账号或密码错误！");
+                    window.location.href="login";
                 }
-                else if(data.returnCode==="-1"){
+                else if(data.returnCode==="3.0.E.1"){
                     alert("没有该用户");
+                    window.location.href="login";
                 }
                 else{
                     alert("登录成功");
