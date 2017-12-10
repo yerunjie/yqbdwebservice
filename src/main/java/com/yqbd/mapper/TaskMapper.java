@@ -110,12 +110,6 @@ public interface TaskMapper {
 
 
     @Select({
-            " select * from task where user_id = #{userId,jdbcType=INTEGER}"
-    })
-    @ResultType(Task.class)
-    List<Task> getPublishedTasksByUserId(Integer userId);
-
-    @Select({
             " select * from task where task_id in (SELECT task_id from user_take WHERE user_id= #{userId,jdbcType=INTEGER})"
     })
     @ResultType(Task.class)

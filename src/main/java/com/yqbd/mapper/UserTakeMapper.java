@@ -2,11 +2,7 @@ package com.yqbd.mapper;
 
 import com.yqbd.model.UserTake;
 import com.yqbd.model.UserTakeKey;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 public interface UserTakeMapper {
     @Delete({
@@ -15,6 +11,18 @@ public interface UserTakeMapper {
           "and user_id = #{userId,jdbcType=INTEGER}"
     })
     int deleteByPrimaryKey(UserTakeKey key);
+
+
+    @Insert({
+            "insert into user_take (task_id, user_id, ",
+            "status, publisher_comment_id, ",
+            "receiver_comment_id)",
+            "values (#{taskId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, ",
+            "0, 0, ",
+            "0)"
+    })
+    int insertUserTake(UserTakeKey record);
+
 
     @Insert({
         "insert into user_take (task_id, user_id, ",
@@ -49,4 +57,6 @@ public interface UserTakeMapper {
           "and user_id = #{userId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(UserTake record);
+
+
 }

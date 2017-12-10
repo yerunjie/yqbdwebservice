@@ -246,7 +246,9 @@
 </html>
 <script type="text/javascript">
     function singleTask(x) {
+        alert(2);
         var account = x;
+        alert(1);
         $.ajax({
             type: "post",
             url: "/task/singleTask",
@@ -319,6 +321,7 @@
                 alert("请求出错");
             }
         })
+    }
     function postTask() {
         window.location.href = "/webCompany/post_task";
 

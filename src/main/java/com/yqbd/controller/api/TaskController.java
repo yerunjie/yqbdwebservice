@@ -133,11 +133,11 @@ public class TaskController extends BaseController {
         return tmp;
     }
 
-    @RequestMapping(value = "/publishTasks")
+    @RequestMapping(value = "/getTakenTask")
     public BaseJson getMyPublishedTask(@RequestParam("userId") int userId) {
-        System.out.println("getMyPublishedTask");
+        System.out.println("getTakenTask");
         BaseJson baseJson = new BaseJson();
-        List<Task> tasks = taskMapper.getPublishedTasksByUserId(userId);
+        List<Task> tasks = taskMapper.getTakenTasksByUserId(userId);
         baseJson.setObj(tasks);
         return baseJson;
     }
@@ -322,6 +322,7 @@ public class TaskController extends BaseController {
         UserCollectKey userTake = userCollectMapper.selectByPrimaryKey(userTakeKey);
         BaseBean baseBean = new BaseBean(Objects.nonNull(userTake));
         baseJson.setObj(baseBean);
+        baseJson.setReturnCode("1.0.C.0");
         return baseJson;
     }
 
@@ -339,8 +340,43 @@ public class TaskController extends BaseController {
         }
         BaseBean baseBean = new BaseBean(Objects.isNull(userTake));
         baseJson.setObj(baseBean);
+        baseJson.setReturnCode("1.0.C.0");
         return baseJson;
     }
+
+
+    @RequestMapping(value = "/isTake")
+    public BaseJson isTake(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
+        BaseJson baseJson = new BaseJson();
+        UserTakeKey userTakeKey = new UserTakeKey();
+        userTakeKey.setUserId(userId);
+        userTakeKey.setTaskId(taskId);
+        UserTake userTake = userTakeMapper.selectByPrimaryKey(userTakeKey);
+        BaseBean baseBean = new BaseBean(Objects.nonNull(userTake));
+        baseJson.setObj(baseBean);
+        baseJson.setReturnCode("1.0.T.0");
+        return baseJson;
+    }
+
+
+    @RequestMapping(value = "/take")
+    public BaseJson take(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
+        BaseJson baseJson = new BaseJson();
+        UserTakeKey userTakeKey = new UserTakeKey();
+        userTakeKey.setUserId(userId);
+        userTakeKey.setTaskId(taskId);
+        UserTake userTake = userTakeMapper.selectByPrimaryKey(userTakeKey);
+        if (Objects.nonNull(userTake)) {
+            userTakeMapper.deleteByPrimaryKey(userTakeKey);
+        } else {
+            userTakeMapper.insertUserTake(userTakeKey);
+        }
+        BaseBean baseBean = new BaseBean(Objects.isNull(userTake));
+        baseJson.setObj(baseBean);
+        baseJson.setReturnCode("1.0.T.0");
+        return baseJson;
+    }
+
 
     private TaskBean parse(Task task) {
         TaskBean taskBean = new TaskBean();
