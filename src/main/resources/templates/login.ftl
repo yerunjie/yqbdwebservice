@@ -14,7 +14,7 @@
 <div class="account-pages">
     <div class="wrapper-page">
         <div class="text-center">
-            <a href="index.html" class="logo"><span>Admin<span>to</span></span></a>
+            <a href="index.html" class="logo"><span>Go<span>out</span></span></a>
         </div>
 
         <div class="m-t-40 card-box">
@@ -85,7 +85,7 @@
                 }
                 else{
                     alert("登录成功");
-                    window.location.href="index";
+                    window.location.href="table_complete";
                 }
             },
 
