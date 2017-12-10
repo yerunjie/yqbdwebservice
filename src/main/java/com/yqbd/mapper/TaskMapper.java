@@ -1,5 +1,6 @@
 package com.yqbd.mapper;
 
+import com.yqbd.beans.UserInfoBean;
 import com.yqbd.model.Task;
 import com.yqbd.model.UserInfo;
 import org.apache.ibatis.annotations.*;
@@ -157,4 +158,11 @@ public interface TaskMapper {
     })
     @ResultType(UserInfo.class)
     List<UserInfo> selectParticipant(Integer taskId);
+
+
+    @Select({
+            "select * from user_info where user_id in (select user_id from user_take where task_id = #{taskId})"
+    })
+    @ResultType(UserInfoBean.class)
+    List<UserInfoBean> getParticipant(Integer taskId);
 }

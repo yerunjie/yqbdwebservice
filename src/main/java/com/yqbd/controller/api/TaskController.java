@@ -8,6 +8,7 @@ import com.yqbd.constants.UserTaskStatus;
 import com.yqbd.controller.BaseController;
 import com.yqbd.mapper.*;
 import com.yqbd.model.*;
+import org.apache.tomcat.jni.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -387,6 +388,16 @@ public class TaskController extends BaseController {
         session.setAttribute("taskId", taskId);
         return baseJson;
 
+    }
+
+    @RequestMapping(value="/getParticipant")
+    public BaseJson getParticipant(@RequestParam("taskId") int taskId){
+        BaseJson baseJson = new BaseJson();
+        BaseBean baseBean = new BaseBean();
+
+        List<UserInfoBean> userInfoList = taskMapper.getParticipant(taskId);
+        baseJson.setObj(userInfoList);
+        return baseJson;
     }
     private TaskBean parse(Task task) {
         TaskBean taskBean = new TaskBean();
