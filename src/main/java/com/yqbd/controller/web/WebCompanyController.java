@@ -166,7 +166,7 @@ public class WebCompanyController extends BaseController {
         List<UserInfo> userInfoList=taskMapper.selectParticipant(taskId);
 
         model.put("userInfoList", userInfoList);
-        return "index";
+        return "participant";
     }
 
     @RequestMapping(value = "/setTask", method = RequestMethod.POST)
