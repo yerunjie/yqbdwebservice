@@ -136,12 +136,12 @@ public class TaskController extends BaseController {
 
     @RequestMapping(value = "/getTakenTask")
     public BaseJson getMyPublishedTask(@RequestParam("userId") int userId) {
-        System.out.println("getTakenTask");
         BaseJson baseJson = new BaseJson();
         List<Task> tasks = taskMapper.getTakenTasksByUserId(userId);
-        baseJson.setObj(tasks);
+        baseJson.setObj(Lists.transform(tasks, this::parse));
         return baseJson;
     }
+
 
     @RequestMapping(value = "/takenTasks")
     public BaseJson getMyTaken(@RequestParam("userId") int userId) {
@@ -394,7 +394,6 @@ public class TaskController extends BaseController {
     public BaseJson getParticipant(@RequestParam("taskId") int taskId){
         BaseJson baseJson = new BaseJson();
         BaseBean baseBean = new BaseBean();
-
         List<UserInfoBean> userInfoList = taskMapper.getParticipant(taskId);
         baseJson.setObj(userInfoList);
         return baseJson;
