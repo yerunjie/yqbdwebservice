@@ -75,6 +75,7 @@ public class CompanyController extends BaseController {
                 session.setAttribute("companyId", result);
                 break;
         }
+        System.out.println(result);
         return baseJson;
     }
 
