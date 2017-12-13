@@ -57,6 +57,7 @@ public class TaskController extends BaseController {
     public BaseJson getAllTasks() {
         BaseJson baseJson = new BaseJson();
         List<Task> tasks = taskMapper.selectAllTasks();
+        Collections.shuffle(tasks);
         baseJson.setObj(Lists.transform(tasks, this::parse));
         return baseJson;
     }
