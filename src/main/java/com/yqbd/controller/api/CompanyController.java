@@ -69,10 +69,15 @@ public class CompanyController extends BaseController {
                 baseJson.setErrorMessage("企业账号和密码不匹配");
                 break;
             default://对应正确用例
+                System.out.println(5);
                 baseJson.setReturnCode("3.0");
+                System.out.println(6);
                 baseJson.setErrorMessage("成功");
+                System.out.println(7);
                 HttpSession session = request.getSession();
+                System.out.println(8);
                 session.setAttribute("companyId", result);
+                System.out.println(9);
                 break;
         }
         System.out.println(result);
