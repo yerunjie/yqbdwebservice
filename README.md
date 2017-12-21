@@ -384,3 +384,4 @@ Moneer Alshaikh, Sean B. Maynard, Atif Ahmad, Shanton Chang
 3. arXiv:1603.03110 Change management: Implementation and benefits of the change control in the information technology enviroment Paulo Roberto Martins de Andrade, Adriano B. Albuquerque, Wesklei Dourado Teófilo, Fátima Aguiar da Silva
 4. 改进Web应用性能方法及性能测试分析  朱连章 田超  COMPUTER ENGINEERING AND DESIGN 2008, 29(7) 
 5. Web Application系统的测试技术研究与应用  田超 
+
