@@ -78,9 +78,13 @@
 
 ### 1. 现行系统现状调查说明
 
+#### 系统体系结构
+
+![图3-1：系统体系结构](doc/pic/sys.png)
+
 #### 组织机构图
 
-![图一：组织机构图](doc/pic/organization.png)
+![图3-2：组织机构图](doc/pic/organization.png)
 
 #### 系统目标
 
@@ -88,11 +92,11 @@
 
 #### 功能一览表
 
-![图二：功能一览表](doc/pic/function.png)
+![图3-3：功能一览表](doc/pic/function.png)
 
 #### 业务流程图
 
-![图三：业务流程图](doc/pic/ssd.png)
+![图3-4：业务流程图](doc/pic/ssd.png)
 
 #### 薄弱环节
 
@@ -117,7 +121,7 @@
 
 ### 1. 新系统拟定的业务流程及业务处理方式
 
-![图四：业务流程](doc/pic/aapdesign.png)
+![图4-1：业务流程](doc/pic/aapdesign.png)
 
 ### 2. 新系统拟定的数据流程(U/C矩阵)
 
@@ -187,17 +191,17 @@
 
 如：企业端查询任务时的输出
 
-![图五：企业查询任务](doc/pic/query_task.png)
+![图5-1：企业查询任务](doc/pic/query_task.png)
 
 申请者列表输出：
 
-![图六：申请者列表](doc/pic/person_list.png)
+![图5-2：申请者列表](doc/pic/person_list.png)
 
 - 输入设计:可以进行多因子找寻想要的志愿者服务，如根据承办单位进行搜索，也可以在给予权限的情况下通过单例任务来查看接收者，和志同道合的人同时接受同一个任务。
 
 - 处理过程设计:
 
-![图七：处理过程](doc/pic/function.png)
+![图5-3：处理过程](doc/pic/function.png)
 
 - 数据库设计:
 
@@ -212,7 +216,28 @@
 	TaskType 任务和任务类型中间表
 	Comment评论表
 
-![图八：数据库设计](doc/pic/database.png)
+![图5-4：数据库设计](doc/pic/database.png)
+
+服务器部署：阿里云 101.132.108.158
+欢迎访问 101.132.108.158:8080/webCompany/login 登陆企业端
+
+数据库配置：腾讯云数据库  goout-1252946747.cossh.myqcloud.com
+
+服务器和github连接相关shell脚本
+![图5-5](doc/pic/set.png)
+
+
+功能append
+基于用户点击量的志愿者活动推荐
+在安卓本地sqlite服务器中，建立个人对志愿者活动的兴趣值信息，初始状态所有兴趣值相同，服从均匀分布，通过点击量和收藏，访问时间等数据进行点对点的调参，但是参数保证不超过基础值的两倍，然后进行相对应的推荐。
+![图5-6](doc/pic/recommand.png)
+
+
+志愿活动参与者的排序
+
+![图5-7](doc/pic/participate.png)
+
+主要基于三个变量排序，所在地区，共同参加任务数，以及数据库内部对任务兴趣值的相似度（方差）
 
  6. 人机界面设计:
 
@@ -221,7 +246,7 @@ app端
 ![a](doc/pic/app_login.png) ![b](doc/pic/app_index.png)
 ![c](doc/pic/app_task.png) ![c](doc/pic/app_me.png)
 
-图九：app端
+图5-8：app端
 
 网页端
 
@@ -229,7 +254,7 @@ app端
 
 ![b](doc/pic/web_pics.png)
 
-图十：网页端
+图5-9：网页端
 
 ## 六、系统功能测试报告
 
@@ -255,12 +280,12 @@ app端
 
 （1）	使用Alibaba编码规约进行安卓端静态代码测试。测试结果如下：
 
-![图十一：静态测试](doc/pic/test_res1.png)
+![图6-1：静态测试](doc/pic/test_res1.png)
 
 没有构成Error的编码错误，大多数是编码风格上的注释缺失，常量定义遗漏。
 修改后的结果：
 
-![图十二：静态测试修改后](doc/pic/test_repair.png)
+![图6-2：静态测试修改后](doc/pic/test_repair.png)
 
 （2）	使用JUnit进行单元测试。测试结果如下：
 
@@ -276,12 +301,12 @@ app端
 
 本次网页测主要使用Web Page Test进行在线测试。
 
-![图十三](doc/pic/tfimg/login1.png)
+![图6-3](doc/pic/tfimg/login1.png)
 从图中可以得到以下信息：Load Time 7.525s，First Byte 0.239s，Start Render 0.298s，Visually Complete 7.800s，	Speed Index 7281，Result (error code) 0 。
 
 再来看上海志愿者网的页面
 
-![图十四](doc/pic/tfimg/shv1.png)
+![图6-4](doc/pic/tfimg/shv1.png)
 从图中可以得到以下信息：Load Time 22.639s，First Byte 1.616s，Start Render 17.000s，Visually Complete 22.700s，	Speed Index 18019，Result (error code)99999 。
 
 右上角为网页性能的各项评级，前两项是网页代码层面的评级，后几项主要基于服务器本身性能的考量。最后一项CDN是内容分发网络，与性能测试无关。
@@ -291,22 +316,22 @@ app端
 
 
 回到GoOut网页测试的各项细则中
-![图十五](doc/pic/tfimg/go1.png)
+![图6-5](doc/pic/tfimg/go1.png)
 Waterfall View
 
-![图十六](doc/pic/tfimg/go2.png)
+![图6-6](doc/pic/tfimg/go2.png)
 Connection View
 
-![](doc/pic/tfimg/go3.png)
+![图6-7](doc/pic/tfimg/go3.png)
 Request Details
 
 测试结果网页链接：http://www.webpagetest.org/result/171220_RS_e3e19d5afe8d7f0291f10b2272ea7b03/1/details/#waterfall_view_step1
 腾讯云1元服务器没有用JMeter测试并发量的价值，但是同时容纳100人登录网页是可以承受的，本项目的网页端是发布志愿服务的端口，理论设计用户数量少于100人，所以在并发控制上处理得当，后期更换高性能服务器会更加快捷。
 另外对GoOut分别做一个国内和全球单次访问测速
 结果如下：
-![](doc/pic/tfimg/world1.png)
+![图6-8](doc/pic/tfimg/world1.png)
 
-![](doc/pic/tfimg/world2.png)
+![图6-9](doc/pic/tfimg/world2.png)
 总体而言网页代码层面编写完备，访问速度和传输时间较优。
 
 
@@ -345,4 +370,7 @@ Request Details
 螺旋开发将瀑布模型和快速原型模型结合起来，强调了其他模型所忽视的风险分析，特别适合于大型复杂的系统。螺旋开发很大程度上是一种风险驱动的方法体系，因为在每个阶段之前及经常发生的循环之前，都必须首先进行风险评估。而敏捷开发，针对软件开过程中诸多的不可预见性，强调的是适应性，适应性的方法集中在快速适应现实的变化。
 
 感谢王老师和助教给予我们团队的帮助！
+<<<<<<< HEAD
 
+=======
+>>>>>>> abe98c6bd4ce809c35a27016097a709ae96ff5a7
