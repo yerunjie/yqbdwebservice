@@ -140,6 +140,7 @@
 | 纠 纷 处 理 |    U    |     U     |      U     |            |         |     U     |      C     |     U     |
 | 推 广 活 动 |         |     U     |      U     |            |         |           |            |     C     |
 
+表4-1：UC矩阵
 
 
 ### 3. 新系统的逻辑结构及数据资源分布 
@@ -150,6 +151,7 @@
 |业务层 | 拦截器拦截|中间数据传输|动态监听推送|
 |持久层|任务信息返回|更新任务状态|更新返回通知|
 
+表4-2：逻辑结构
 
 ### 4. 新系统拟采用的管理方式
 
@@ -268,6 +270,8 @@ app端
 | 测试内容：| 网页端和安卓端的功能|
 | 备注：|
 
+表6-1：测试概述
+
 ### 2. 测试环境
 
 | 用途 | 硬件环境 | 软件环境 |
@@ -275,6 +279,7 @@ app端
 |网页端测试 | Surface pro7,ThinkPad E450 | Chrome,centos7.0,mysql 5.7,windows 10|
 | 安卓端测试 | 华为手机 | Android 7.0,centos7.0,mysql 5.7|
 
+表6-2：测试环境
 
 ### 3. 测试方案及结果
 
@@ -335,8 +340,6 @@ Request Details
 总体而言网页代码层面编写完备，访问速度和传输时间较优。
 
 
-
-
 ### 4. 测试综述
  本轮测试持续将近1周，到目前为止发现的Blocker数据量 122个，其中，重新开启：0 个，未解决：0个，已解决：122个。该轮测试通过，鉴于Debug结果没有Warning和动态测试的结果，基本达到预期的系统设计要求，不需要做回归测试或验证测试。
  
@@ -358,7 +361,8 @@ Request Details
 
 在12月15日给王老师展示之后，对于王老师提出的宝贵意见我们进行了充分讨论，在12月15日至12月17日进行了第五次附加终极迭代周期，加入了“参与志愿活动的志愿者按与用户的信息相关度排序”等功能。
 
-#### 同时，对于本次项目开发采用的敏捷开发方式，与我们之前的已知的流行开发方式进行了一个对比，结果如下：
+同时，对于本次项目开发采用的敏捷开发方式，与我们之前的已知的流行开发方式进行了一个对比，结果如下：
+
 敏捷开发，大家关注的是先把东西做出来，交付或者上线，在实际场景中去修改弥补需求中的不足，快速修改，再次发布版本。再次上线或者交付。如此循环，直到用户满意。适用于需求不明确的项目、创新性的项目或者需要抢占市场的项目。
 
 瀑布式开发要求明确的需求，大家按照需求一步步做好规划，在项目运作过程中严格产出各种文档，按着流程一步步走下去。严格遵循预先计划的需求分析、设计、编码、集成、测试、维护的步骤顺序进行，步骤成果作为衡量进度的方法，例如需求规格，设计文档，测试计划和代码审阅等等。
@@ -370,3 +374,13 @@ Request Details
 螺旋开发将瀑布模型和快速原型模型结合起来，强调了其他模型所忽视的风险分析，特别适合于大型复杂的系统。螺旋开发很大程度上是一种风险驱动的方法体系，因为在每个阶段之前及经常发生的循环之前，都必须首先进行风险评估。而敏捷开发，针对软件开过程中诸多的不可预见性，强调的是适应性，适应性的方法集中在快速适应现实的变化。
 
 感谢王老师和助教给予我们团队的帮助！
+
+## 七、参考文献
+
+1. arXiv:1707.07371 Integration of Information Patterns in the Modeling and Design of Mobility Management Services
+Alexander Keimer, Nicolas Laurent-Brouty, Farhad Farokhi, Hippolyte Signargout, Vladimir Cvetkovic, Alexandre M. Bayen, Karl H. Johansson
+2. arXiv:1606.00890 Information Security Policy: A Management Practice Perspective
+Moneer Alshaikh, Sean B. Maynard, Atif Ahmad, Shanton Chang
+3. arXiv:1603.03110 Change management: Implementation and benefits of the change control in the information technology enviroment Paulo Roberto Martins de Andrade, Adriano B. Albuquerque, Wesklei Dourado Teófilo, Fátima Aguiar da Silva
+4. 改进Web应用性能方法及性能测试分析  朱连章 田超  COMPUTER ENGINEERING AND DESIGN 2008, 29(7) 
+5. Web Application系统的测试技术研究与应用  田超 
