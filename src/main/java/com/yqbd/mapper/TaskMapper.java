@@ -1,6 +1,8 @@
 package com.yqbd.mapper;
 
+import com.yqbd.beans.UserInfoBean;
 import com.yqbd.model.Task;
+import com.yqbd.model.UserInfo;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -109,12 +111,6 @@ public interface TaskMapper {
 
 
     @Select({
-            " select * from task where user_id = #{userId,jdbcType=INTEGER}"
-    })
-    @ResultType(Task.class)
-    List<Task> getPublishedTasksByUserId(Integer userId);
-
-    @Select({
             " select * from task where task_id in (SELECT task_id from user_take WHERE user_id= #{userId,jdbcType=INTEGER})"
     })
     @ResultType(Task.class)
@@ -143,9 +139,30 @@ public interface TaskMapper {
     @ResultType(Task.class)
     List<Task> getCollectedTasks(Integer userId);
 
+
+    @Select({
+            "select * from task where task_id in (select task_id from user_take where user_id = #{userId})"
+    })
+    @ResultType(Task.class)
+    List<Task> getAcceptTasks(Integer userId);
+
+
     @Select({
             "select * from task where company_id = #{companyId}"
     })
     @ResultType(Task.class)
     List<Task> getCompanyTasks(Integer companyId);
+
+    @Select({
+            "select * from user_info where user_id in (select user_id from user_take where task_id = #{taskId})"
+    })
+    @ResultType(UserInfo.class)
+    List<UserInfo> selectParticipant(Integer taskId);
+
+
+    @Select({
+            "select * from user_info where user_id in (select user_id from user_take where task_id = #{taskId})"
+    })
+    @ResultType(UserInfoBean.class)
+    List<UserInfoBean> getParticipant(Integer taskId);
 }

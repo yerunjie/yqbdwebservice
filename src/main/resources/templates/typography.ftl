@@ -1,100 +1,102 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>后台模板</title>
-		<link rel="stylesheet" href="../assets/css/amazeui.css" />
-		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="../assets/css/core.css" />
-		<link rel="stylesheet" href="../assets/css/menu.css" />
-		<link rel="stylesheet" href="../assets/css/index.css" />
-		<link rel="stylesheet" href="../assets/css/admin.css" />
-		<link rel="stylesheet" href="../assets/css/page/typography.css" />
-	</head>
-	<body>
-		<!-- Begin page -->
-		<header class="am-topbar am-topbar-fixed-top">		
-			<div class="am-topbar-left am-hide-sm-only">
-                <a href="index" class="logo"><span>Admin<span>to</span></span><i class="zmdi zmdi-layers"></i></a>
-            </div>
-	
-			<div class="contain">
-				<ul class="am-nav am-navbar-nav am-navbar-left">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Out</title>
+    <link rel="stylesheet" href="../assets/css/amazeui.css"/>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/core.css"/>
+    <link rel="stylesheet" href="../assets/css/menu.css"/>
+    <link rel="stylesheet" href="../assets/css/index.css"/>
+    <link rel="stylesheet" href="../assets/css/admin.css"/>
+    <link rel="stylesheet" href="../assets/css/page/typography.css"/>
+    <link rel="stylesheet" href="../assets/css/page/form.css"/>
+</head>
+<body>
+<!-- Begin page -->
+<header class="am-topbar am-topbar-fixed-top">
+    <div class="am-topbar-left am-hide-sm-only">
+        <a href="/index" class="logo"><span>Go<span>to</span></span><i class="zmdi zmdi-layers"></i></a>
+    </div>
 
-					<li><h4 class="page-title">排版</h4></li>
-				</ul>
-				
-				<ul class="am-nav am-navbar-nav am-navbar-right">
-					<li class="inform"><i class="fa fa-bell-o" aria-hidden="true"></i></li>
-					<li class="hidden-xs am-hide-sm-only">
-                        <form role="search" class="app-search">
-                            <input type="text" placeholder="Search..." class="form-control">
-                            <a href=""><img src="../assets/img/search.png"></a>
-                        </form>
+    <div class="contain">
+        <ul class="am-nav am-navbar-nav am-navbar-left">
+
+            <li><h4 class="page-title">基本表格</h4></li>
+        </ul>
+
+        <ul class="am-nav am-navbar-nav am-navbar-right">
+            <li class="inform"><i class="am-icon-bell-o" aria-hidden="true"></i></li>
+            <li class="hidden-xs am-hide-sm-only">
+                <form role="search" class="app-search">
+                    <input type="text" placeholder="Search..." class="form-control">
+                    <a href=""><img src="../assets/img/search.png"></a>
+                </form>
+            </li>
+        </ul>
+    </div>
+</header>
+<!-- end page -->
+
+
+<div class="admin">
+    <!--<div class="am-g">-->
+    <!-- ========== Left Sidebar Start ========== -->
+    <!--<div class="left side-menu am-hide-sm-only am-u-md-1 am-padding-0">
+        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 548px;">
+            <div class="sidebar-inner slimscrollleft" style="overflow: hidden; width: auto; height: 548px;">-->
+    <!-- sidebar start -->
+    <div class="admin-sidebar am-offcanvas  am-padding-0" id="admin-offcanvas">
+        <div class="am-offcanvas-bar admin-offcanvas-bar">
+            <!-- User -->
+            <div class="user-box am-hide-sm-only">
+                <div class="user-img">
+                    <img src="../assets/img/avatar-1.jpg" alt="user-img" title="Mat Helme"
+                         class="img-circle img-thumbnail img-responsive">
+                    <div class="user-status offline"><i class="am-icon-dot-circle-o" aria-hidden="true"></i></div>
+                </div>
+                <h5><a href="#">${company_name}</a></h5>
+                <ul class="list-inline">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-cog" aria-hidden="true"></i>
+                        </a>
                     </li>
-				</ul>
-			</div>
-		</header>
-		<!-- end page -->
-		
-		
-		<div class="admin">
-			<div class="am-g">
-		<!-- ========== Left Sidebar Start ========== -->
-		<!--<div class="left side-menu am-hide-sm-only am-u-md-1 am-padding-0">
-			<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 548px;">
-				<div class="sidebar-inner slimscrollleft" style="overflow: hidden; width: auto; height: 548px;">-->
-                  <!-- sidebar start -->
-				  <div class="admin-sidebar am-offcanvas am-u-md-1 am-padding-0" id="admin-offcanvas">
-				    <div class="am-offcanvas-bar admin-offcanvas-bar">
-				    	<!-- User -->
-						<div class="user-box am-hide-sm-only">
-	                        <div class="user-img">
-	                            <img src="../assets/img/avatar-1.jpg" alt="user-img" title="Mat Helme" class="img-circle img-thumbnail img-responsive">
-	                            <div class="user-status offline"><i class="fa fa-dot-circle-o" aria-hidden="true"></i></div>
-	                        </div>
-	                        <h5><a href="#">${company_name}</a> </h5>
-	                        <ul class="list-inline">
-	                            <li>
-	                                <a href="#">
-	                                    <i class="fa fa-cog" aria-hidden="true"></i>
-	                                </a>
-	                            </li>
-	
-	                            <li>
-	                                <a href="#" class="text-custom">
-	                                    <i class="fa fa-cog" aria-hidden="true"></i>
-	                                </a>
-	                            </li>
-	                        </ul>
-	                    </div>
-	                    <!-- End User -->
-	            
-						 <ul class="am-list admin-sidebar-list">
-						    <li><a href="index"><span class="am-icon-home"></span> 首页</a></li>
-						    <li><a href="typography"><span class="am-icon-home"></span> 排版</a></li>
-						    <li class="admin-parent">
-						      <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 页面模块 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
-						      <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
-						        <li><a href="admin-user" class="am-cf"><span class="am-icon-check"></span> 个人资料<span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
-						        <li><a href="admin-help"><span class="am-icon-puzzle-piece"></span> 帮助页</a></li>
-						        <li><a href="admin-gallery"><span class="am-icon-th"></span> 相册页面<span class="am-badge am-badge-secondary am-margin-right am-fr">24</span></a></li>
-						        <li><a href="admin-log"><span class="am-icon-calendar"></span> 系统日志</a></li>
-						        <li><a href="admin-404"><span class="am-icon-bug"></span> 404</a></li>
-						      </ul>
-						    </li>
-						    <li><a href="admin-table"><span class="am-icon-table"></span> 表格</a></li>
-						    <li><a href="admin-form"><span class="am-icon-pencil-square-o"></span> 表单</a></li>
-						    <li><a href="#"><span class="am-icon-sign-out"></span> 注销</a></li>
-						  </ul>
-				</div>
-				  </div>
-				  <!-- sidebar end -->
-    
-				<!--</div>
-			</div>
-		</div>-->
+
+                    <li>
+                        <a href="#" class="text-custom">
+                            <i class="fa fa-cog" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- End User -->
+
+            <ul class="am-list admin-sidebar-list">
+                <li class="admin-parent">
+                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav1'}"><span class="am-icon-table"></span>
+                        任务管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav1">
+                        <li><a href="table_complete">我的任务</a></li>
+                    </ul>
+                </li>
+                <li class="admin-parent">
+                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav2'}"><i class="am-icon-line-chart"
+                                                                                      aria-hidden="true"></i> 日常图表 <span
+                            class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav2">
+                        <li><a href="chart_line" class="am-cf"> 访问状况图</span></a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- sidebar end -->
+
+    <!--</div>
+</div>
+</div>-->
 		<!-- ========== Left Sidebar end ========== -->
 		
 		

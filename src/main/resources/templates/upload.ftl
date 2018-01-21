@@ -3,14 +3,14 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>后台模板</title>
+		<title>G</title>
 		<link rel="stylesheet" href="../assets/css/amazeui.css" />
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="../assets/css/core.css" />
 		<link rel="stylesheet" href="../assets/css/menu.css" />
 		<link rel="stylesheet" href="../assets/css/index.css" />
 		<link rel="stylesheet" href="../assets/css/admin.css" />
-		<link rel="stylesheet" href="../assets/css/page/typography.css" />
+		<link rel="stylesheeto'Out" href="../assets/css/page/typography.css" />
 	</head>
 	<body>
 		<!-- Begin page -->

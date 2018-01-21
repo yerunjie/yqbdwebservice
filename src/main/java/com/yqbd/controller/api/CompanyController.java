@@ -79,7 +79,7 @@ public class CompanyController extends BaseController {
     }
 
     @RequestMapping(value = "/getAllCompanies")
-    public BaseJson getAllCompanies() {
+        public BaseJson getAllCompanies() {
         BaseJson baseJson = new BaseJson();
         List<CompanyInfo> companyInfoList = companyInfoMapper.getAllCompanies();
         baseJson.setObj(companyInfoList.stream().map(this::parse).collect(Collectors.toList()));
