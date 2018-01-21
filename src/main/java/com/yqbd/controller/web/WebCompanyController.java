@@ -1,14 +1,19 @@
 package com.yqbd.controller.web;
 
+import com.yqbd.beans.BaseJson;
 import com.yqbd.controller.BaseController;
 import com.yqbd.mapper.CompanyInfoMapper;
 import com.yqbd.mapper.TaskMapper;
 import com.yqbd.model.CompanyInfo;
 import com.yqbd.model.Task;
+import com.yqbd.model.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -96,6 +101,7 @@ public class WebCompanyController extends BaseController {
         return "table_complete";
     }
 
+
     @RequestMapping(value = "/typography")
     public String typography(Map<String, Object> model) {
         int companyId = getCurrentCompanyId();
@@ -147,4 +153,31 @@ public class WebCompanyController extends BaseController {
         model.put("company_name", companyName);
         return "post_task";
     }
+
+
+    @RequestMapping(value = "/showParticipant")
+    public String showParticipant(Map<String, Object> model){
+
+        int companyId = getCurrentCompanyId();
+        CompanyInfo companyInfo = companyInfoMapper.selectByPrimaryKey(companyId);
+        String companyName = companyInfo.getCompanyName();
+        model.put("company_name", companyName);
+        int taskId = getTaskId();
+        List<UserInfo> userInfoList=taskMapper.selectParticipant(taskId);
+
+        model.put("userInfoList", userInfoList);
+        return "participant";
+    }
+
+    @RequestMapping(value = "/setTask", method = RequestMethod.POST)
+    public BaseJson setTask(@RequestParam("taskId") String taskId) {
+        BaseJson baseJson = new BaseJson();
+        int result = Integer.valueOf(taskId);
+        baseJson.setReturnCode("3.0");
+        baseJson.setErrorMessage("成功");
+        HttpSession session = request.getSession();
+        session.setAttribute("taskId", result);
+        return baseJson;
+    }
+
 }

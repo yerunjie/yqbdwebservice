@@ -65,7 +65,6 @@ public class UserController {
     public BaseJson register(@RequestParam("accountNumber") String accountNumber, @RequestParam("userPassword") String userPassword,
                           @RequestParam("realName") String realName){
         BaseJson baseJson = new BaseJson();
-
         UserInfo userInfo = new UserInfo();
         userInfo.setAccountNumber(accountNumber);
         userInfo.setPassword(userPassword);

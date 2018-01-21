@@ -14,7 +14,7 @@
 <div class="account-pages">
     <div class="wrapper-page">
         <div class="text-center">
-            <a href="index.html" class="logo"><span>Admin<span>to</span></span></a>
+            <a href="index.html" class="logo"><span>Go<span>out</span></span></a>
         </div>
 
         <div class="m-t-40 card-box">
@@ -75,15 +75,17 @@
             },
 
             success:function(data){
-                if(data.returnCode==="0"){
+                if(data.returnCode==="3.0.E.2"){
                     alert("账号或密码错误！");
+                    window.location.href="login";
                 }
-                else if(data.returnCode==="-1"){
+                else if(data.returnCode==="3.0.E.1"){
                     alert("没有该用户");
+                    window.location.href="login";
                 }
                 else{
                     alert("登录成功");
-                    window.location.href="index";
+                    window.location.href="table_complete";
                 }
             },
 

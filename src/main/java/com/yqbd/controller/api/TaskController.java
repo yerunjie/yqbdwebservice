@@ -8,6 +8,7 @@ import com.yqbd.constants.UserTaskStatus;
 import com.yqbd.controller.BaseController;
 import com.yqbd.mapper.*;
 import com.yqbd.model.*;
+import org.apache.tomcat.jni.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +57,15 @@ public class TaskController extends BaseController {
     public BaseJson getAllTasks() {
         BaseJson baseJson = new BaseJson();
         List<Task> tasks = taskMapper.selectAllTasks();
+        Collections.shuffle(tasks);
+        baseJson.setObj(Lists.transform(tasks, this::parse));
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/getAcceptTasks")
+    public BaseJson getAcceptTasks(@RequestParam("userId") int userId) {
+        BaseJson baseJson = new BaseJson();
+        List<Task> tasks = taskMapper.getAcceptTasks(userId);
         baseJson.setObj(Lists.transform(tasks, this::parse));
         return baseJson;
     }
@@ -125,14 +135,14 @@ public class TaskController extends BaseController {
         return tmp;
     }
 
-    @RequestMapping(value = "/publishTasks")
+    @RequestMapping(value = "/getTakenTask")
     public BaseJson getMyPublishedTask(@RequestParam("userId") int userId) {
-        System.out.println("getMyPublishedTask");
         BaseJson baseJson = new BaseJson();
-        List<Task> tasks = taskMapper.getPublishedTasksByUserId(userId);
-        baseJson.setObj(tasks);
+        List<Task> tasks = taskMapper.getTakenTasksByUserId(userId);
+        baseJson.setObj(Lists.transform(tasks, this::parse));
         return baseJson;
     }
+
 
     @RequestMapping(value = "/takenTasks")
     public BaseJson getMyTaken(@RequestParam("userId") int userId) {
@@ -169,6 +179,7 @@ public class TaskController extends BaseController {
         taskMapper.deleteByPrimaryKey(taskId);
         System.out.println("task" + taskId + "已删除");
     }
+
 
     @RequestMapping(value = "/getSearch")
     public BaseJson getSearch(@RequestParam("map") String map) {
@@ -313,6 +324,7 @@ public class TaskController extends BaseController {
         UserCollectKey userTake = userCollectMapper.selectByPrimaryKey(userTakeKey);
         BaseBean baseBean = new BaseBean(Objects.nonNull(userTake));
         baseJson.setObj(baseBean);
+        baseJson.setReturnCode("1.0.C.0");
         return baseJson;
     }
 
@@ -330,9 +342,63 @@ public class TaskController extends BaseController {
         }
         BaseBean baseBean = new BaseBean(Objects.isNull(userTake));
         baseJson.setObj(baseBean);
+        baseJson.setReturnCode("1.0.C.0");
         return baseJson;
     }
 
+
+    @RequestMapping(value = "/isTake")
+    public BaseJson isTake(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
+        BaseJson baseJson = new BaseJson();
+        UserTakeKey userTakeKey = new UserTakeKey();
+        userTakeKey.setUserId(userId);
+        userTakeKey.setTaskId(taskId);
+        UserTake userTake = userTakeMapper.selectByPrimaryKey(userTakeKey);
+        BaseBean baseBean = new BaseBean(Objects.nonNull(userTake));
+        baseJson.setObj(baseBean);
+        baseJson.setReturnCode("1.0.T.0");
+        return baseJson;
+    }
+
+
+    @RequestMapping(value = "/take")
+    public BaseJson take(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
+        BaseJson baseJson = new BaseJson();
+        UserTakeKey userTakeKey = new UserTakeKey();
+        userTakeKey.setUserId(userId);
+        userTakeKey.setTaskId(taskId);
+        UserTake userTake = userTakeMapper.selectByPrimaryKey(userTakeKey);
+        if (Objects.nonNull(userTake)) {
+            userTakeMapper.deleteByPrimaryKey(userTakeKey);
+        } else {
+            userTakeMapper.insertUserTake(userTakeKey);
+        }
+        BaseBean baseBean = new BaseBean(Objects.isNull(userTake));
+        baseJson.setObj(baseBean);
+        baseJson.setReturnCode("1.0.T.0");
+        return baseJson;
+    }
+
+    @RequestMapping(value="/showParticipant")
+    public BaseJson showParticipant(@RequestParam("taskId") int taskId){
+        BaseJson baseJson = new BaseJson();
+        BaseBean baseBean = new BaseBean();
+        baseBean.setSingleResult(String.valueOf("taskId"));
+        baseJson.setObj(baseBean);
+        HttpSession session = request.getSession();
+        session.setAttribute("taskId", taskId);
+        return baseJson;
+
+    }
+
+    @RequestMapping(value="/getParticipant")
+    public BaseJson getParticipant(@RequestParam("taskId") int taskId){
+        BaseJson baseJson = new BaseJson();
+        BaseBean baseBean = new BaseBean();
+        List<UserInfoBean> userInfoList = taskMapper.getParticipant(taskId);
+        baseJson.setObj(userInfoList);
+        return baseJson;
+    }
     private TaskBean parse(Task task) {
         TaskBean taskBean = new TaskBean();
         BeanUtils.copyProperties(task, taskBean);
@@ -349,4 +415,6 @@ public class TaskController extends BaseController {
         BeanUtils.copyProperties(type, result);
         return result;
     }
+
+
 }

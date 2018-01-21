@@ -97,83 +97,68 @@
     <!--</div>
 </div>
 </div>-->
-		<!-- ========== Left Sidebar end ========== -->
-		
-		
-		
-	<!--	<div class="am-g">-->
-		<!-- ============================================================== -->
-		<!-- Start right Content here -->
-		<div class="content-page">
-			<!-- Start content -->
-			<div class="content">
-                <div class="am-g">
-                    <div class="am-u-md-6">
-                        <!-- 动态数据+时间坐标轴 -->
-                        <div class="card-box">
-                            <div  id="trends" style="width: 100%;height: 300px;"></div>
-                        </div>
-                    </div>
-                    <div class="am-u-md-6">
-                        <!-- 人数 -->
-                        <div class="card-box">
-                            <div  id="trends_number" style="width: 100%;height: 300px;"></div>
-                        </div>
+    <!-- ========== Left Sidebar end ========== -->
+
+
+
+    <!--	<div class="am-g">-->
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <div class="content-page">
+        <!-- Start content -->
+        <div class="content">
+            <div class="am-g">
+                <!-- Row start -->
+                <div class="am-u-sm-12">
+                    <div class="card-box">
+                        <!-- col start -->
+                        <table class="am-table">
+                            <thead>
+                            <tr>
+                                <th>名字</th>
+                                <th>电话</th>
+                                <th>学校</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <#list userInfoList as user>
+                            <tr>
+                                <td>${user.realName}</td>
+                                <td>${user.telephone}</td>
+                                <td>${user.school}</td>
+                            </tr>
+                            </#list>
+
+
+                            </tbody>
+                        </table>
+                        <!-- col end -->
                     </div>
                 </div>
-				<div class="am-g" hidden="hidden">
-					<div class="am-u-md-6" >
-						<!-- 折线图堆叠 -->
-						<div class="card-box">
-							<div  id="Stack" style="width: 100%;height: 250px;"></div>
-						</div>
-					</div>
 
-					<div class="am-u-md-6">
-						<!-- 堆叠区域图  -->
-						<div class="card-box">
-							<div  id="area" style="width: 100%;height: 250px;"></div>
-						</div>
-					</div>
-				</div>
 
-				<div class="am-g" hidden="hidden">
-					<div class="am-u-md-6">
-						<!-- Step Line -->
-						<div class="card-box">
-							<div  id="step" style="width: 100%;height: 250px;"></div>
-						</div>
-					</div>
-
-					<div class="am-u-md-6">
-						<!-- 大数据面积图  -->
-						<div class="card-box">
-							<div  id="shuju" style="width: 100%;height: 250px;"></div>
-						</div>
-					</div>
-				</div>
+                <!-- Row end -->
+            </div>
 
 
 
+        </div>
+    </div>
+    <!-- end right Content here -->
+    <!--</div>-->
+</div>
+</div>
+
+<!-- navbar -->
+<a href="admin-offcanvas" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"><!--<i class="fa fa-bars" aria-hidden="true"></i>--></a>
+
+<script type="text/javascript" src="../assets/js/jquery-2.1.0.js" ></script>
+<script type="text/javascript" src="../assets/js/amazeui.min.js"></script>
+<script type="text/javascript" src="../assets/js/app.js" ></script>
+<script type="text/javascript" src="../assets/js/blockUI.js" ></script>
 
 
 
-			</div>
-		</div>
-		<!-- end right Content here -->
-		<!--</div>-->
-		</div>
-		</div>
-		
-		<!-- navbar -->
-		<a href="admin-offcanvas" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"><!--<i class="fa fa-bars" aria-hidden="true"></i>--></a>
-		
-		<script type="text/javascript" src="../assets/js/jquery-2.1.0.js" ></script>
-		<script type="text/javascript" src="../assets/js/amazeui.min.js"></script>
-		<script type="text/javascript" src="../assets/js/app.js" ></script>
-		<script type="text/javascript" src="../assets/js/blockUI.js" ></script>
-		<script type="text/javascript" src="../assets/js/charts/echarts.min.js" ></script>
-		<script type="text/javascript" src="../assets/js/charts/lineChart.js" ></script>
-	</body>
-	
+</body>
+
 </html>
