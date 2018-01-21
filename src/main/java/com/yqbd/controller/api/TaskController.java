@@ -399,6 +399,7 @@ public class TaskController extends BaseController {
         baseJson.setObj(userInfoList);
         return baseJson;
     }
+
     private TaskBean parse(Task task) {
         TaskBean taskBean = new TaskBean();
         BeanUtils.copyProperties(task, taskBean);
