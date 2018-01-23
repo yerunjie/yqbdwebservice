@@ -149,7 +149,6 @@
             },
 
             error:function(){
-                alert(3);
                 alert("请求出错");
             }
         })
