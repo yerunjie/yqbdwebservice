@@ -119,7 +119,6 @@
 <script type="text/javascript" src="../assets/js/blockUI.js" ></script>
 <script type="text/javascript">
     function loginfuc() {
-        alert(1);
         var account = $("#account").val();
         var password = $("#password").val();
         $.ajax({
@@ -133,7 +132,6 @@
             },
 
             success:function(data){
-                alert(2);
                 if(data.returnCode==="3.0.E.2"){
                     alert("账号或密码错误！");
                     window.location.href="wechat_login";
@@ -144,7 +142,7 @@
                 }
                 else{
                     alert("登录成功");
-                    window.location.href="wechat_list";
+                    window.location.href="list";
                 }
             },
 

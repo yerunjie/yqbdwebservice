@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport"
           content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no"/>
-    <title>打卡</title>
+    <title>任务列表</title>
     <link rel="stylesheet" href="/wechat/weui/lib/weui.min.css">
     <link rel="stylesheet" href="/wechat/weui/css/jquery-weui.min.css">
     <link rel="stylesheet" href="/wechat/css/module.css">
@@ -39,7 +39,7 @@
     <div class="weui-panel__hd">工作列表</div>
     <div class="weui-panel__bd ">
     <#list taskList as task>
-        <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+        <a onclick="singleTask(${task.taskId})" href="" class="weui-media-box weui-media-box_appmsg">
             <div class="weui-media-box__hd">
                 <img class="weui-media-box__thumb" src="http://goout-1252946747.cossh.myqcloud.com/${task.simpleDrawingAddress}">
             </div>
@@ -69,3 +69,25 @@
 </script>
 </body>
 </html>
+
+<script>
+   function singleTask(taskId) {
+       var account = taskId;
+       $.ajax({
+           type: "post",
+           url: "/wechat/single_task_search",
+           timeout: 80000,
+           dataType: "json",
+           data: {
+               "taskId": account
+           },
+           success: function (data) {
+               window.location.href = "/wechat/single_task";
+           },
+           error: function () {
+               alert("请求出错");
+           }
+       })
+
+   }
+</script>

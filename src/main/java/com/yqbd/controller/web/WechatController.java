@@ -14,9 +14,7 @@ import com.yqbd.model.UserInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
@@ -96,6 +94,7 @@ public class WechatController extends BaseController {
     }
 
     @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
+    @ResponseBody
     public BaseJson companyLogin(@RequestParam("userAccount") String userAccount, @RequestParam("userPassword") String userPassword) {
         BaseJson baseJson = new BaseJson();
         UserInfo userInfo = userInfoMapper.selectByAccountNumber(userAccount);
@@ -129,4 +128,46 @@ public class WechatController extends BaseController {
         }
         return baseJson;
     }
+
+    @RequestMapping(value = "/personal")
+    public String mine(Map<String, Object> model) {
+        HttpSession session = request.getSession();
+        model.put("module", "wechat_mine");
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey((int) session.getAttribute("userId"));
+        model.put("userInfo", userInfo);
+        return "wechat_mine";
+    }
+
+    @RequestMapping(value = "/my_task")
+    public String myTask(Map<String, Object> model) {
+        HttpSession session = request.getSession();
+        model.put("module", "wechat_my_task");
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey((int) session.getAttribute("userId"));
+        model.put("userInfo", userInfo);
+        List<Task> list = taskMapper.getTakenTasksByUserId(userInfo.getUserId());
+        session.setAttribute("taskList", list);
+        return "wechat_my_task";
+    }
+
+    @RequestMapping(value = "/single_task")
+    public String singleTask(Map<String, Object> model) {
+        model.put("module", "wechat_single_task");
+        HttpSession session = request.getSession();
+        int taskId = (int)session.getAttribute("taskId");
+        Task task = taskMapper.selectByPrimaryKey(taskId);
+        model.put("task",task);
+        return "wechat_single_task";
+    }
+
+    @RequestMapping(value = "/single_task_search")
+    @ResponseBody
+    public BaseJson singleTaskSearch(@RequestParam("taskId") String taskId) {
+        BaseJson baseJson = new BaseJson();
+        HttpSession session = request.getSession();
+        session.setAttribute("taskId",Integer.valueOf(taskId));
+        baseJson.setErrorMessage("成功");
+        return baseJson;
+    }
 }
+
+
