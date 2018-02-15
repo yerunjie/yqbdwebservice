@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Date;
 import java.util.Map;
 
 @Controller
@@ -43,7 +42,7 @@ public class ResourceController extends BaseController {
         Map<String, Object> map = Maps.newHashMap();
         if (!file.isEmpty()) {
             try {
-                String filePath = request.getSession().getServletContext().getRealPath("/images");
+                String filePath = servletRequest.getSession().getServletContext().getRealPath("/images");
                 System.out.println(filePath);
                 String fileName = file.getOriginalFilename();
                 uploadFile(file.getBytes(), filePath, fileName);

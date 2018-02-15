@@ -1,70 +1,84 @@
 package com.yqbd.controller.api;
 
 
+import com.yqbd.annotation.Authentication;
 import com.yqbd.beans.BaseBean;
-import com.yqbd.beans.BaseJson;
+import com.yqbd.constants.CommonConstants;
+import com.yqbd.controller.BaseController;
+import com.yqbd.dto.Role;
+import com.yqbd.dto.request.UserLoginRequest;
+import com.yqbd.dto.response.BaseJsonResponse;
 import com.yqbd.mapper.UserInfoMapper;
 import com.yqbd.model.UserInfo;
+import com.yqbd.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by 11022 on 2017/7/20.
  */
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/v1/api/user")
+public class UserController extends BaseController {
+
+    @Autowired
+    private TokenService tokenService;
     @Autowired
     private UserInfoMapper userInfoMapper;
 
 
     @RequestMapping(value = "/getUserInfoByUserID")
-    public BaseJson getUserInfoByUserID(@RequestParam("userID") int userID) {
-        BaseJson baseJson = new BaseJson();
+    @Authentication(Role.User)
+    public BaseJsonResponse getUserInfoByUserID() {
+        int userID = getToken().getId();
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userID);
-        baseJson.setObj(userInfo);
-        baseJson.setErrorMessage("");
-        baseJson.setReturnCode("");
-        return baseJson;
+        baseJsonResponse.setObj(userInfo);
+        baseJsonResponse.setErrorMessage("");
+        baseJsonResponse.setReturnCode("");
+        return baseJsonResponse;
     }
 
-    @RequestMapping(value = "/login")
-    public BaseJson login(@RequestParam("accountNumber") String accountNumber, @RequestParam("userPassword") String userPassword) {
-        BaseJson baseJson = new BaseJson();
-        UserInfo userInfo = userInfoMapper.selectByAccountNumber(accountNumber);
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public BaseJsonResponse login(@RequestBody UserLoginRequest request) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
+        UserInfo userInfo = userInfoMapper.selectByAccountNumber(request.getAccountNumber());
         BaseBean baseBean = new BaseBean();
         int result;
         if (userInfo == null) {
             result = -1;
-        } else if (userInfo.getPassword().equals(userPassword)) {
+        } else if (userInfo.getPassword().equals(request.getUserPassword())) {
             result = userInfo.getUserId();
+            String token = tokenService.generateToken(Role.User, result);
+            baseBean.setSingleResult(token);
+            baseJsonResponse.setObj(baseBean);
+            addCookie(CommonConstants.TOKEN_KEY, token);
         } else {
             result = 0;
+            baseBean.setSingleResult(String.valueOf(result));
+            baseJsonResponse.setObj(baseBean);
         }
-        baseBean.setSingleResult(String.valueOf(result));
-        baseJson.setObj(baseBean);
         switch (result) {
             case -1://对应异常  2.0.E.1
-                baseJson.setReturnCode("2.0.E.1");
-                baseJson.setErrorMessage("学号未被注册");
+                baseJsonResponse.setReturnCode("2.0.E.1");
+                baseJsonResponse.setErrorMessage("学号未被注册");
                 break;
             case 0://对应异常  2.0.E.2
-                baseJson.setReturnCode("2.0.E.2");
-                baseJson.setErrorMessage("学号和密码不匹配");
+                baseJsonResponse.setReturnCode("2.0.E.2");
+                baseJsonResponse.setErrorMessage("学号和密码不匹配");
                 break;
             default://对应正确用例
-                baseJson.setReturnCode("2.0");
-                baseJson.setErrorMessage("成功");
+                baseJsonResponse.setReturnCode("2.0");
+                baseJsonResponse.setErrorMessage("成功");
                 break;
         }
-        return baseJson;
+        return baseJsonResponse;
     }
+
     @RequestMapping(value = "/register")
-    public BaseJson register(@RequestParam("accountNumber") String accountNumber, @RequestParam("userPassword") String userPassword,
-                          @RequestParam("realName") String realName){
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse register(@RequestParam("accountNumber") String accountNumber, @RequestParam("userPassword") String userPassword,
+                                     @RequestParam("realName") String realName) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserInfo userInfo = new UserInfo();
         userInfo.setAccountNumber(accountNumber);
         userInfo.setPassword(userPassword);
@@ -74,10 +88,10 @@ public class UserController {
         int result;
         result = userInfo.getUserId();
         baseBean.setSingleResult(String.valueOf(result));
-        baseJson.setObj(baseBean);
-        baseJson.setReturnCode("2.0");
-        baseJson.setErrorMessage("成功");
-        return baseJson;
+        baseJsonResponse.setObj(baseBean);
+        baseJsonResponse.setReturnCode("2.0");
+        baseJsonResponse.setErrorMessage("成功");
+        return baseJsonResponse;
     }
 
 

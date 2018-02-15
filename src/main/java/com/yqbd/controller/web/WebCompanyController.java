@@ -1,6 +1,6 @@
 package com.yqbd.controller.web;
 
-import com.yqbd.beans.BaseJson;
+import com.yqbd.dto.response.BaseJsonResponse;
 import com.yqbd.controller.BaseController;
 import com.yqbd.mapper.CompanyInfoMapper;
 import com.yqbd.mapper.TaskMapper;
@@ -127,7 +127,7 @@ public class WebCompanyController extends BaseController {
         CompanyInfo companyInfo = companyInfoMapper.selectByPrimaryKey(companyId);
         String companyName = companyInfo.getCompanyName();
         model.put("company_name", companyName);
-        Integer taskId = Integer.valueOf((String) request.getSession().getAttribute("taskId"));
+        Integer taskId = Integer.valueOf((String) servletRequest.getSession().getAttribute("taskId"));
         Task task = taskMapper.selectByPrimaryKey(taskId);
         model.put("task", task);
         return "single_task";
@@ -139,7 +139,7 @@ public class WebCompanyController extends BaseController {
         CompanyInfo companyInfo = companyInfoMapper.selectByPrimaryKey(companyId);
         String companyName = companyInfo.getCompanyName();
         model.put("company_name", companyName);
-        Integer taskId = Integer.valueOf((String) request.getSession().getAttribute("taskId"));
+        Integer taskId = Integer.valueOf((String) servletRequest.getSession().getAttribute("taskId"));
         Task task = taskMapper.selectByPrimaryKey(taskId);
         model.put("task", task);
         return "edit_task";
@@ -170,14 +170,14 @@ public class WebCompanyController extends BaseController {
     }
 
     @RequestMapping(value = "/setTask", method = RequestMethod.POST)
-    public BaseJson setTask(@RequestParam("taskId") String taskId) {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse setTask(@RequestParam("taskId") String taskId) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         int result = Integer.valueOf(taskId);
-        baseJson.setReturnCode("3.0");
-        baseJson.setErrorMessage("成功");
-        HttpSession session = request.getSession();
+        baseJsonResponse.setReturnCode("3.0");
+        baseJsonResponse.setErrorMessage("成功");
+        HttpSession session = servletRequest.getSession();
         session.setAttribute("taskId", result);
-        return baseJson;
+        return baseJsonResponse;
     }
 
 }

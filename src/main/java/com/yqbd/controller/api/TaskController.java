@@ -6,9 +6,9 @@ import com.yqbd.beans.*;
 import com.yqbd.constants.TaskStatus;
 import com.yqbd.constants.UserTaskStatus;
 import com.yqbd.controller.BaseController;
+import com.yqbd.dto.response.BaseJsonResponse;
 import com.yqbd.mapper.*;
 import com.yqbd.model.*;
-import org.apache.tomcat.jni.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,47 +46,47 @@ public class TaskController extends BaseController {
     protected UserCollectMapper userCollectMapper;
 
     @RequestMapping(value = "/getAllTypes")
-    public BaseJson getAllTypes() {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse getAllTypes() {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         List<Type> types = typeMapper.selectAllTypes();
-        baseJson.setObj(types);
-        return baseJson;
+        baseJsonResponse.setObj(types);
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/getAllTasks")
-    public BaseJson getAllTasks() {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse getAllTasks() {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         List<Task> tasks = taskMapper.selectAllTasks();
         Collections.shuffle(tasks);
-        baseJson.setObj(Lists.transform(tasks, this::parse));
-        return baseJson;
+        baseJsonResponse.setObj(Lists.transform(tasks, this::parse));
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/getAcceptTasks")
-    public BaseJson getAcceptTasks(@RequestParam("userId") int userId) {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse getAcceptTasks(@RequestParam("userId") int userId) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         List<Task> tasks = taskMapper.getAcceptTasks(userId);
-        baseJson.setObj(Lists.transform(tasks, this::parse));
-        return baseJson;
+        baseJsonResponse.setObj(Lists.transform(tasks, this::parse));
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/getCollectedTasks")
-    public BaseJson getCollectedTasks(@RequestParam("userId") int userId) {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse getCollectedTasks(@RequestParam("userId") int userId) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         List<Task> tasks = taskMapper.getCollectedTasks(userId);
-        baseJson.setObj(Lists.transform(tasks, this::parse));
-        return baseJson;
+        baseJsonResponse.setObj(Lists.transform(tasks, this::parse));
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/getCompanyTasks")
-    public BaseJson getCompanyTasks(@RequestParam("companyId") int companyId) {
-        BaseJson baseJson = new BaseJson();
-        baseJson.setObj(Lists.transform(taskMapper.getCompanyTasks(companyId), this::parse));
-        return baseJson;
+    public BaseJsonResponse getCompanyTasks(@RequestParam("companyId") int companyId) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
+        baseJsonResponse.setObj(Lists.transform(taskMapper.getCompanyTasks(companyId), this::parse));
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/getSearchTypes")
-    public BaseJson getSearchTypes() {
+    public BaseJsonResponse getSearchTypes() {
         List<Type> typelist = typeMapper.selectAllTypes();
         // typelist.stream().collect(Collectors.groupingBy(Type::getTypeClassification));
         /*Map<String, List<Type>> map = typelist.stream()
@@ -101,15 +101,15 @@ public class TaskController extends BaseController {
             tmp.setTypes(entry.getValue());
             list.add(tmp);
         }*/
-        BaseJson baseJson = new BaseJson();
-        baseJson.setObj(list);
-        return baseJson;
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
+        baseJsonResponse.setObj(list);
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/publishTask", method = RequestMethod.POST)
     @Transactional
-    public BaseJson publishTask(@RequestBody TaskBean taskBean) {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse publishTask(@RequestBody TaskBean taskBean) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         Task task = parse(taskBean);
         task.setPublishTime(new Date());
         task.setTaskStatus(TaskStatus.NEW.getValue());
@@ -117,8 +117,8 @@ public class TaskController extends BaseController {
         for (TypeBean typeBean : taskBean.getTypeBeans()) {
             taskTypeMapper.insert(new TaskTypeKey(task.getTaskId(), typeBean.getTypeId()));
         }
-        baseJson.setObj(taskMapper.selectByPrimaryKey(task.getTaskId()));
-        return baseJson;
+        baseJsonResponse.setObj(taskMapper.selectByPrimaryKey(task.getTaskId()));
+        return baseJsonResponse;
     }
 
     private Task parse(TaskBean taskBean) {
@@ -136,42 +136,42 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/getTakenTask")
-    public BaseJson getMyPublishedTask(@RequestParam("userId") int userId) {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse getMyPublishedTask(@RequestParam("userId") int userId) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         List<Task> tasks = taskMapper.getTakenTasksByUserId(userId);
-        baseJson.setObj(Lists.transform(tasks, this::parse));
-        return baseJson;
+        baseJsonResponse.setObj(Lists.transform(tasks, this::parse));
+        return baseJsonResponse;
     }
 
 
     @RequestMapping(value = "/takenTasks")
-    public BaseJson getMyTaken(@RequestParam("userId") int userId) {
+    public BaseJsonResponse getMyTaken(@RequestParam("userId") int userId) {
         System.out.println("getMyTaken");
-        BaseJson baseJson = new BaseJson();
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         List<Task> tasks = taskMapper.getTakenTasksByUserId(userId);
-        baseJson.setObj(tasks);
-        return baseJson;
+        baseJsonResponse.setObj(tasks);
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/isTaken")
-    public BaseJson isTaken(@RequestParam("userId") int userId, @RequestParam("taskId") int taskId) {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse isTaken(@RequestParam("userId") int userId, @RequestParam("taskId") int taskId) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserTakeKey userTakeKey = new UserTakeKey();
         userTakeKey.setUserId(userId);
         userTakeKey.setTaskId(taskId);
         UserTake userTake = userTakeMapper.selectByPrimaryKey(userTakeKey);
         BaseBean baseBean = new BaseBean(Objects.nonNull(userTake));
-        baseJson.setObj(baseBean);
-        return baseJson;
+        baseJsonResponse.setObj(baseBean);
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/getTaskById")
-    public BaseJson getTaskById(@RequestParam("taskId") int taskId) {
+    public BaseJsonResponse getTaskById(@RequestParam("taskId") int taskId) {
         System.out.println("getTaskById");
-        BaseJson baseJson = new BaseJson();
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         Task task = taskMapper.selectByPrimaryKey(taskId);
-        baseJson.setObj(task);
-        return baseJson;
+        baseJsonResponse.setObj(task);
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/cancelPublishedTask")
@@ -182,16 +182,16 @@ public class TaskController extends BaseController {
 
 
     @RequestMapping(value = "/getSearch")
-    public BaseJson getSearch(@RequestParam("map") String map) {
+    public BaseJsonResponse getSearch(@RequestParam("map") String map) {
         System.out.println(map);
         String[] list = map.split(",");
         List<Integer> typeList = typeMapper.getSearchType(list);
         typeList.add(0);
         System.out.println(typeList);
         List<Task> tasks = taskMapper.getSearchTasks(typeList);
-        BaseJson baseJson = new BaseJson();
-        baseJson.setObj(tasks);
-        return baseJson;
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
+        baseJsonResponse.setObj(tasks);
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/cancelTaken")
@@ -214,8 +214,8 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/userTakeTask")
-    public BaseJson userTakeTask(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse userTakeTask(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserTakeKey userTakeKey = new UserTakeKey();
         userTakeKey.setUserId(userId);
         userTakeKey.setTaskId(taskId);
@@ -227,32 +227,32 @@ public class TaskController extends BaseController {
             userTake.setStatus(UserTaskStatus.NEW.getValue());
             userTakeMapper.insertSelective(userTake);
         } else {
-            baseJson.setReturnCode("E");
-            baseJson.setErrorMessage("已经申请");
+            baseJsonResponse.setReturnCode("E");
+            baseJsonResponse.setErrorMessage("已经申请");
         }
-        baseJson.setObj(userTake);
-        return baseJson;
+        baseJsonResponse.setObj(userTake);
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/singleTask")
-    public BaseJson takeTask(@RequestParam("taskId") String taskId) {
-        BaseJson baseJson = new BaseJson();
-        HttpSession session = request.getSession();
+    public BaseJsonResponse takeTask(@RequestParam("taskId") String taskId) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
+        HttpSession session = servletRequest.getSession();
         session.setAttribute("taskId", taskId);
-        return baseJson;
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/editTask")
-    public BaseJson editTask(@RequestParam("taskId") String taskId,
-                             @RequestParam("taskTitle") String taskTitle,
-                             @RequestParam("taskDescription") String taskDescription,
-                             @RequestParam("pay") String pay,
-                             @RequestParam("publishTime") String publishTime,
-                             @RequestParam("deadline") String deadline,
-                             @RequestParam("startTime") String startTime,
-                             @RequestParam("completeTime") String completeTime,
-                             @RequestParam("maxPeopleNumber") String maxPeopleNumber,
-                             @RequestParam("taskAddress") String taskAddress
+    public BaseJsonResponse editTask(@RequestParam("taskId") String taskId,
+                                     @RequestParam("taskTitle") String taskTitle,
+                                     @RequestParam("taskDescription") String taskDescription,
+                                     @RequestParam("pay") String pay,
+                                     @RequestParam("publishTime") String publishTime,
+                                     @RequestParam("deadline") String deadline,
+                                     @RequestParam("startTime") String startTime,
+                                     @RequestParam("completeTime") String completeTime,
+                                     @RequestParam("maxPeopleNumber") String maxPeopleNumber,
+                                     @RequestParam("taskAddress") String taskAddress
     ) throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Task task = taskMapper.selectByPrimaryKey(Integer.valueOf(taskId));
@@ -267,43 +267,43 @@ public class TaskController extends BaseController {
         task.setMaxPeopleNumber(Integer.valueOf(maxPeopleNumber));
         task.setTaskAddress(taskAddress);
         taskMapper.updateByPrimaryKeyWithBLOBs(task);
-        BaseJson baseJson = new BaseJson();
-        HttpSession session = request.getSession();
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
+        HttpSession session = servletRequest.getSession();
         session.setAttribute("taskId", taskId);
-        return baseJson;
+        return baseJsonResponse;
     }
 
 
     @RequestMapping(value = "/deleteTask")
-    public BaseJson editTask(@RequestParam("taskId") String taskId) {
+    public BaseJsonResponse editTask(@RequestParam("taskId") String taskId) {
         int companyId = taskMapper.selectByPrimaryKey(Integer.valueOf(taskId)).getCompanyId();
         taskMapper.deleteByPrimaryKey(Integer.valueOf(taskId));
-        BaseJson baseJson = new BaseJson();
-        HttpSession session = request.getSession();
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
+        HttpSession session = servletRequest.getSession();
         session.setAttribute("companyId", companyId);
-        return baseJson;
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/userCancelTakeTask")
-    public BaseJson userCancelTakeTask(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse userCancelTakeTask(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserTakeKey userTakeKey = new UserTakeKey();
         userTakeKey.setUserId(userId);
         userTakeKey.setTaskId(taskId);
         UserTake userTake = userTakeMapper.selectByPrimaryKey(userTakeKey);
         if (userTake == null) {
-            baseJson.setReturnCode("E");
-            baseJson.setErrorMessage("未申请过");
+            baseJsonResponse.setReturnCode("E");
+            baseJsonResponse.setErrorMessage("未申请过");
         } else {
-            //baseJson.setReturnCode("");
+            //baseJsonResponse.setReturnCode("");
             switch (UserTaskStatus.valueOf(userTake.getStatus())) {
                 case APPLY_FOR_CANCEL:
-                    baseJson.setReturnCode("E");
-                    baseJson.setErrorMessage("已经申请");
+                    baseJsonResponse.setReturnCode("E");
+                    baseJsonResponse.setErrorMessage("已经申请");
                     break;
                 case CANCELLED:
-                    baseJson.setReturnCode("E");
-                    baseJson.setErrorMessage("已经取消");
+                    baseJsonResponse.setReturnCode("E");
+                    baseJsonResponse.setErrorMessage("已经取消");
                     break;
                 default:
                     userTake.setStatus(UserTaskStatus.APPLY_FOR_CANCEL.getValue());
@@ -311,26 +311,26 @@ public class TaskController extends BaseController {
                     break;
             }
         }
-        baseJson.setObj(userTake);
-        return baseJson;
+        baseJsonResponse.setObj(userTake);
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/isCollected")
-    public BaseJson isCollected(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse isCollected(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserCollectKey userTakeKey = new UserCollectKey();
         userTakeKey.setUserId(userId);
         userTakeKey.setTaskId(taskId);
         UserCollectKey userTake = userCollectMapper.selectByPrimaryKey(userTakeKey);
         BaseBean baseBean = new BaseBean(Objects.nonNull(userTake));
-        baseJson.setObj(baseBean);
-        baseJson.setReturnCode("1.0.C.0");
-        return baseJson;
+        baseJsonResponse.setObj(baseBean);
+        baseJsonResponse.setReturnCode("1.0.C.0");
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/collect")
-    public BaseJson collect(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse collect(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserCollectKey userCollectKey = new UserCollectKey();
         userCollectKey.setUserId(userId);
         userCollectKey.setTaskId(taskId);
@@ -341,29 +341,29 @@ public class TaskController extends BaseController {
             userCollectMapper.insert(userCollectKey);
         }
         BaseBean baseBean = new BaseBean(Objects.isNull(userTake));
-        baseJson.setObj(baseBean);
-        baseJson.setReturnCode("1.0.C.0");
-        return baseJson;
+        baseJsonResponse.setObj(baseBean);
+        baseJsonResponse.setReturnCode("1.0.C.0");
+        return baseJsonResponse;
     }
 
 
     @RequestMapping(value = "/isTake")
-    public BaseJson isTake(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse isTake(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserTakeKey userTakeKey = new UserTakeKey();
         userTakeKey.setUserId(userId);
         userTakeKey.setTaskId(taskId);
         UserTake userTake = userTakeMapper.selectByPrimaryKey(userTakeKey);
         BaseBean baseBean = new BaseBean(Objects.nonNull(userTake));
-        baseJson.setObj(baseBean);
-        baseJson.setReturnCode("1.0.T.0");
-        return baseJson;
+        baseJsonResponse.setObj(baseBean);
+        baseJsonResponse.setReturnCode("1.0.T.0");
+        return baseJsonResponse;
     }
 
 
     @RequestMapping(value = "/take")
-    public BaseJson take(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse take(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserTakeKey userTakeKey = new UserTakeKey();
         userTakeKey.setUserId(userId);
         userTakeKey.setTaskId(taskId);
@@ -374,30 +374,30 @@ public class TaskController extends BaseController {
             userTakeMapper.insertUserTake(userTakeKey);
         }
         BaseBean baseBean = new BaseBean(Objects.isNull(userTake));
-        baseJson.setObj(baseBean);
-        baseJson.setReturnCode("1.0.T.0");
-        return baseJson;
+        baseJsonResponse.setObj(baseBean);
+        baseJsonResponse.setReturnCode("1.0.T.0");
+        return baseJsonResponse;
     }
 
     @RequestMapping(value="/showParticipant")
-    public BaseJson showParticipant(@RequestParam("taskId") int taskId){
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse showParticipant(@RequestParam("taskId") int taskId){
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         BaseBean baseBean = new BaseBean();
         baseBean.setSingleResult(String.valueOf("taskId"));
-        baseJson.setObj(baseBean);
-        HttpSession session = request.getSession();
+        baseJsonResponse.setObj(baseBean);
+        HttpSession session = servletRequest.getSession();
         session.setAttribute("taskId", taskId);
-        return baseJson;
+        return baseJsonResponse;
 
     }
 
     @RequestMapping(value="/getParticipant")
-    public BaseJson getParticipant(@RequestParam("taskId") int taskId){
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse getParticipant(@RequestParam("taskId") int taskId){
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         BaseBean baseBean = new BaseBean();
         List<UserInfoBean> userInfoList = taskMapper.getParticipant(taskId);
-        baseJson.setObj(userInfoList);
-        return baseJson;
+        baseJsonResponse.setObj(userInfoList);
+        return baseJsonResponse;
     }
 
     private TaskBean parse(Task task) {

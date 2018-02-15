@@ -27,7 +27,7 @@ public class UtilsController extends BaseController{
                 //相对路径
                 String fileRelativePath = "/images/";
                 // 文件保存路径
-                String filePath = request.getSession().getServletContext().getRealPath(fileRelativePath);
+                String filePath = servletRequest.getSession().getServletContext().getRealPath(fileRelativePath);
                 File f = new File(filePath);
                 //若目录不存在，则创建
                 if (!f.exists()) {

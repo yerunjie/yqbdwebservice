@@ -1,20 +1,20 @@
-package com.yqbd.beans;
+package com.yqbd.dto.response;
 
 import java.io.Serializable;
 
 /**
- * File name：BaseJson
+ * File name：BaseJsonResponse
  * Author: Administrator
  * Description：JSON基础结构，包含响应码和响应消息，反馈给前台页面
  * Modify History:
  */
-public class BaseJson implements Serializable, Cloneable {
+public class BaseJsonResponse implements Serializable, Cloneable {
 
     private String returnCode;//响应代码
     private String errorMessage;//错误消息
     private Object obj;
 
-    public BaseJson() {
+    public BaseJsonResponse() {
         this.returnCode = "";
         this.errorMessage = "";
     }

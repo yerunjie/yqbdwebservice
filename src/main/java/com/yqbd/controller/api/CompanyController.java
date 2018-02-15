@@ -2,7 +2,7 @@ package com.yqbd.controller.api;
 
 
 import com.yqbd.beans.BaseBean;
-import com.yqbd.beans.BaseJson;
+import com.yqbd.dto.response.BaseJsonResponse;
 import com.yqbd.beans.CompanyInfoBean;
 import com.yqbd.controller.BaseController;
 import com.yqbd.mapper.CompanyInfoMapper;
@@ -35,17 +35,17 @@ public class CompanyController extends BaseController {
     private GroupInfoMapper groupInfoMapper;
 
     @RequestMapping(value = "/getCompanyInfoByCompanyId")
-    public BaseJson getCompanyInfoByCompanyId(@RequestParam("companyId") int companyId) {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse getCompanyInfoByCompanyId(@RequestParam("companyId") int companyId) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         CompanyInfo companyInfo = companyInfoMapper.selectByPrimaryKey(companyId);
-        baseJson.setObj(parse(companyInfo));
-        return baseJson;
+        baseJsonResponse.setObj(parse(companyInfo));
+        return baseJsonResponse;
     }
 
 
     @RequestMapping(value = "/companyLogin", method = RequestMethod.POST)
-    public BaseJson companyLogin(@RequestParam("companyAccount") String companyAccount, @RequestParam("companyPassword") String companyPassword) {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse companyLogin(@RequestParam("companyAccount") String companyAccount, @RequestParam("companyPassword") String companyPassword) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         CompanyInfo companyInfo = companyInfoMapper.selectByCompanyAccount(companyAccount);
         BaseBean baseBean = new BaseBean();
         int result;
@@ -58,32 +58,32 @@ public class CompanyController extends BaseController {
             result = 0;
         }
         baseBean.setSingleResult(String.valueOf(result));
-        baseJson.setObj(baseBean);
+        baseJsonResponse.setObj(baseBean);
         switch (result) {
             case -1://对应异常  3.0.E.1
-                baseJson.setReturnCode("3.0.E.1");
-                baseJson.setErrorMessage("企业账号未被注册");
+                baseJsonResponse.setReturnCode("3.0.E.1");
+                baseJsonResponse.setErrorMessage("企业账号未被注册");
                 break;
             case 0://对应异常  2.0.E.2
-                baseJson.setReturnCode("3.0.E.2");
-                baseJson.setErrorMessage("企业账号和密码不匹配");
+                baseJsonResponse.setReturnCode("3.0.E.2");
+                baseJsonResponse.setErrorMessage("企业账号和密码不匹配");
                 break;
             default://对应正确用例
-                baseJson.setReturnCode("3.0");
-                baseJson.setErrorMessage("成功");
-                HttpSession session = request.getSession();
+                baseJsonResponse.setReturnCode("3.0");
+                baseJsonResponse.setErrorMessage("成功");
+                HttpSession session = servletRequest.getSession();
                 session.setAttribute("companyId", result);
                 break;
         }
-        return baseJson;
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/getAllCompanies")
-        public BaseJson getAllCompanies() {
-        BaseJson baseJson = new BaseJson();
+        public BaseJsonResponse getAllCompanies() {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         List<CompanyInfo> companyInfoList = companyInfoMapper.getAllCompanies();
-        baseJson.setObj(companyInfoList.stream().map(this::parse).collect(Collectors.toList()));
-        return baseJson;
+        baseJsonResponse.setObj(companyInfoList.stream().map(this::parse).collect(Collectors.toList()));
+        return baseJsonResponse;
     }
 
     private CompanyInfoBean parse(CompanyInfo companyInfo) {

@@ -1,8 +1,9 @@
 package com.yqbd.controller.web;
 
 import com.google.common.collect.Lists;
-import com.yqbd.beans.*;
 import com.yqbd.controller.BaseController;
+import com.yqbd.beans.*;
+import com.yqbd.dto.response.BaseJsonResponse;
 import com.yqbd.mapper.CompanyInfoMapper;
 import com.yqbd.mapper.TaskMapper;
 import com.yqbd.mapper.TypeMapper;
@@ -95,8 +96,8 @@ public class WechatController extends BaseController {
 
     @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
     @ResponseBody
-    public BaseJson companyLogin(@RequestParam("userAccount") String userAccount, @RequestParam("userPassword") String userPassword) {
-        BaseJson baseJson = new BaseJson();
+    public BaseJsonResponse companyLogin(@RequestParam("userAccount") String userAccount, @RequestParam("userPassword") String userPassword) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserInfo userInfo = userInfoMapper.selectByAccountNumber(userAccount);
         BaseBean baseBean = new BaseBean();
         int result;
@@ -109,29 +110,29 @@ public class WechatController extends BaseController {
             result = 0;
         }
         baseBean.setSingleResult(String.valueOf(result));
-        baseJson.setObj(baseBean);
+        baseJsonResponse.setObj(baseBean);
         switch (result) {
             case -1://对应异常  3.0.E.1
-                baseJson.setReturnCode("3.0.E.1");
-                baseJson.setErrorMessage("用户账号未被注册");
+                baseJsonResponse.setReturnCode("3.0.E.1");
+                baseJsonResponse.setErrorMessage("用户账号未被注册");
                 break;
             case 0://对应异常  2.0.E.2
-                baseJson.setReturnCode("3.0.E.2");
-                baseJson.setErrorMessage("用户账号和密码不匹配");
+                baseJsonResponse.setReturnCode("3.0.E.2");
+                baseJsonResponse.setErrorMessage("用户账号和密码不匹配");
                 break;
             default://对应正确用例
-                baseJson.setReturnCode("3.0");
-                baseJson.setErrorMessage("成功");
-                HttpSession session = request.getSession();
+                baseJsonResponse.setReturnCode("3.0");
+                baseJsonResponse.setErrorMessage("成功");
+                HttpSession session = servletRequest.getSession();
                 session.setAttribute("userId", result);
                 break;
         }
-        return baseJson;
+        return baseJsonResponse;
     }
 
     @RequestMapping(value = "/personal")
     public String mine(Map<String, Object> model) {
-        HttpSession session = request.getSession();
+        HttpSession session = servletRequest.getSession();
         model.put("module", "wechat_mine");
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey((int) session.getAttribute("userId"));
         model.put("userInfo", userInfo);
@@ -140,7 +141,7 @@ public class WechatController extends BaseController {
 
     @RequestMapping(value = "/my_task")
     public String myTask(Map<String, Object> model) {
-        HttpSession session = request.getSession();
+        HttpSession session = servletRequest.getSession();
         model.put("module", "wechat_my_task");
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey((int) session.getAttribute("userId"));
         model.put("userInfo", userInfo);
@@ -152,7 +153,7 @@ public class WechatController extends BaseController {
     @RequestMapping(value = "/single_task")
     public String singleTask(Map<String, Object> model) {
         model.put("module", "wechat_single_task");
-        HttpSession session = request.getSession();
+        HttpSession session = servletRequest.getSession();
         int taskId = (int)session.getAttribute("taskId");
         Task task = taskMapper.selectByPrimaryKey(taskId);
         model.put("task",task);
@@ -161,12 +162,12 @@ public class WechatController extends BaseController {
 
     @RequestMapping(value = "/single_task_search")
     @ResponseBody
-    public BaseJson singleTaskSearch(@RequestParam("taskId") String taskId) {
-        BaseJson baseJson = new BaseJson();
-        HttpSession session = request.getSession();
+    public BaseJsonResponse singleTaskSearch(@RequestParam("taskId") String taskId) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
+        HttpSession session = servletRequest.getSession();
         session.setAttribute("taskId",Integer.valueOf(taskId));
-        baseJson.setErrorMessage("成功");
-        return baseJson;
+        baseJsonResponse.setErrorMessage("成功");
+        return baseJsonResponse;
     }
 }
 
