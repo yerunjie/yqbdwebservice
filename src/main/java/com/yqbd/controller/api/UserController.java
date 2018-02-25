@@ -1,18 +1,25 @@
 package com.yqbd.controller.api;
 
 
+import com.google.common.collect.Lists;
 import com.yqbd.annotation.Authentication;
 import com.yqbd.beans.BaseBean;
+import com.yqbd.beans.UserInfoBean;
 import com.yqbd.constants.CommonConstants;
 import com.yqbd.controller.BaseController;
 import com.yqbd.dto.Role;
+import com.yqbd.dto.request.UpdateUserInfoRequest;
 import com.yqbd.dto.request.UserLoginRequest;
 import com.yqbd.dto.response.BaseJsonResponse;
+import com.yqbd.mapper.TaskMapper;
 import com.yqbd.mapper.UserInfoMapper;
+import com.yqbd.model.Task;
 import com.yqbd.model.UserInfo;
 import com.yqbd.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by 11022 on 2017/7/20.
@@ -26,7 +33,7 @@ public class UserController extends BaseController {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
-
+    //used
     @RequestMapping(value = "/getUserInfoByUserID")
     @Authentication(Role.User)
     public BaseJsonResponse getUserInfoByUserID() {
@@ -38,6 +45,18 @@ public class UserController extends BaseController {
         baseJsonResponse.setReturnCode("");
         return baseJsonResponse;
     }
+
+    @RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
+    @Authentication(Role.User)
+    public BaseJsonResponse updateUserInfo(@RequestBody UpdateUserInfoRequest request) {
+        if (request != null && request.getUserInfoBean() != null){
+            UserInfoBean userInfoBean = request.getUserInfoBean();
+            userInfoBean.setUserId(getToken().getId());
+            userInfoMapper.updateByPrimaryKey(new UserInfo(userInfoBean));
+        }
+        return new BaseJsonResponse();
+    }
+
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public BaseJsonResponse login(@RequestBody UserLoginRequest request) {

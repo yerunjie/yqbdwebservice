@@ -2,10 +2,13 @@ package com.yqbd.controller.api;
 
 
 import com.google.common.collect.Lists;
+import com.yqbd.annotation.Authentication;
 import com.yqbd.beans.*;
 import com.yqbd.constants.TaskStatus;
 import com.yqbd.constants.UserTaskStatus;
 import com.yqbd.controller.BaseController;
+import com.yqbd.dto.Role;
+import com.yqbd.dto.request.UncollectTaskRequest;
 import com.yqbd.dto.response.BaseJsonResponse;
 import com.yqbd.mapper.*;
 import com.yqbd.model.*;
@@ -22,12 +25,8 @@ import java.util.stream.Collectors;
 /**
  * Created by 11022 on 2017/7/21.
  */
-// 1、组别创建（group表加一项）、组别删除、查看公司已有组别
-// 2、发布长期任务（isGroup为1）【前态：目标小组必须已经在group表中，否则弹出提示跳转到 1 】
-//publishTask,属性多加一个组别
-//问题：发布长期任务时，需要规定组别，这个组应该是已有的小组，task列里应该有写明这个任务发给了哪个组的属性
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/v1/api/task")
 public class TaskController extends BaseController {
 
     @Autowired
@@ -62,20 +61,44 @@ public class TaskController extends BaseController {
         return baseJsonResponse;
     }
 
+    //used
     @RequestMapping(value = "/getAcceptTasks")
-    public BaseJsonResponse getAcceptTasks(@RequestParam("userId") int userId) {
+    @Authentication(Role.User)
+    public BaseJsonResponse getAcceptTasks() {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
-        List<Task> tasks = taskMapper.getAcceptTasks(userId);
+        int userId = getToken().getId();
+        List<TaskBean> tasks = new ArrayList<>();
+        if (userId > 0){
+            tasks.addAll(Lists.transform(taskMapper.getAcceptTasks(userId), this::parse));
+        }
+        baseJsonResponse.setObj(tasks);
+        return baseJsonResponse;
+    }
+
+    //used
+    @RequestMapping(value = "/getCollectedTasks")
+    @Authentication(Role.User)
+    public BaseJsonResponse getCollectedTasks() {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
+        int userId = getToken().getId();
+        List<Task> tasks = taskMapper.getCollectedTasks(userId);
         baseJsonResponse.setObj(Lists.transform(tasks, this::parse));
         return baseJsonResponse;
     }
 
-    @RequestMapping(value = "/getCollectedTasks")
-    public BaseJsonResponse getCollectedTasks(@RequestParam("userId") int userId) {
-        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
-        List<Task> tasks = taskMapper.getCollectedTasks(userId);
-        baseJsonResponse.setObj(Lists.transform(tasks, this::parse));
-        return baseJsonResponse;
+    @RequestMapping(value = "/uncollectedTasks", method = RequestMethod.POST)
+    @Authentication(Role.User)
+    public BaseJsonResponse uncollectedTasks(@RequestBody UncollectTaskRequest uncollectTaskRequest) {
+        if (uncollectTaskRequest != null && uncollectTaskRequest.getUserCollectList() != null){
+            int userId = getToken().getId();
+            for (Integer id : uncollectTaskRequest.getUserCollectList()) {
+                UserCollectKey key = new UserCollectKey();
+                key.setTaskId(id);
+                key.setUserId(userId);
+                userCollectMapper.deleteByPrimaryKey(key);
+            }
+        }
+        return getCollectedTasks();
     }
 
     @RequestMapping(value = "/getCompanyTasks")
