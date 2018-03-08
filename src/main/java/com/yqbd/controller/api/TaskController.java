@@ -8,6 +8,7 @@ import com.yqbd.constants.TaskStatus;
 import com.yqbd.constants.UserTaskStatus;
 import com.yqbd.controller.BaseController;
 import com.yqbd.dto.Role;
+import com.yqbd.dto.request.TaskRequest;
 import com.yqbd.dto.request.UncollectTaskRequest;
 import com.yqbd.dto.response.BaseJsonResponse;
 import com.yqbd.mapper.*;
@@ -68,7 +69,7 @@ public class TaskController extends BaseController {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         int userId = getToken().getId();
         List<TaskBean> tasks = new ArrayList<>();
-        if (userId > 0){
+        if (userId > 0) {
             tasks.addAll(Lists.transform(taskMapper.getAcceptTasks(userId), this::parse));
         }
         baseJsonResponse.setObj(tasks);
@@ -89,7 +90,7 @@ public class TaskController extends BaseController {
     @RequestMapping(value = "/uncollectedTasks", method = RequestMethod.POST)
     @Authentication(Role.User)
     public BaseJsonResponse uncollectedTasks(@RequestBody UncollectTaskRequest uncollectTaskRequest) {
-        if (uncollectTaskRequest != null && uncollectTaskRequest.getUserCollectList() != null){
+        if (uncollectTaskRequest != null && uncollectTaskRequest.getUserCollectList() != null) {
             int userId = getToken().getId();
             for (Integer id : uncollectTaskRequest.getUserCollectList()) {
                 UserCollectKey key = new UserCollectKey();
@@ -130,15 +131,19 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/publishTask", method = RequestMethod.POST)
-    @Transactional
-    public BaseJsonResponse publishTask(@RequestBody TaskBean taskBean) {
+    @Authentication(Role.User)
+    public BaseJsonResponse publishTask(@RequestBody TaskRequest taskRequest) {
+        TaskBean taskBean = taskRequest.getTaskBean();
+        taskBean.setUserId(getToken().getId());
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         Task task = parse(taskBean);
         task.setPublishTime(new Date());
         task.setTaskStatus(TaskStatus.NEW.getValue());
         taskMapper.insertSelective(task);
-        for (TypeBean typeBean : taskBean.getTypeBeans()) {
-            taskTypeMapper.insert(new TaskTypeKey(task.getTaskId(), typeBean.getTypeId()));
+        if (taskBean.getTypeBeans() != null) {
+            for (TypeBean typeBean : taskBean.getTypeBeans()) {
+                taskTypeMapper.insert(new TaskTypeKey(task.getTaskId(), typeBean.getTypeId()));
+            }
         }
         baseJsonResponse.setObj(taskMapper.selectByPrimaryKey(task.getTaskId()));
         return baseJsonResponse;
@@ -402,8 +407,8 @@ public class TaskController extends BaseController {
         return baseJsonResponse;
     }
 
-    @RequestMapping(value="/showParticipant")
-    public BaseJsonResponse showParticipant(@RequestParam("taskId") int taskId){
+    @RequestMapping(value = "/showParticipant")
+    public BaseJsonResponse showParticipant(@RequestParam("taskId") int taskId) {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         BaseBean baseBean = new BaseBean();
         baseBean.setSingleResult(String.valueOf("taskId"));
@@ -414,8 +419,8 @@ public class TaskController extends BaseController {
 
     }
 
-    @RequestMapping(value="/getParticipant")
-    public BaseJsonResponse getParticipant(@RequestParam("taskId") int taskId){
+    @RequestMapping(value = "/getParticipant")
+    public BaseJsonResponse getParticipant(@RequestParam("taskId") int taskId) {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         BaseBean baseBean = new BaseBean();
         List<UserInfoBean> userInfoList = taskMapper.getParticipant(taskId);
