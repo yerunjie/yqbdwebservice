@@ -13,9 +13,9 @@ import com.yqbd.dto.request.UncollectTaskRequest;
 import com.yqbd.dto.response.BaseJsonResponse;
 import com.yqbd.mapper.*;
 import com.yqbd.model.*;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -62,6 +62,15 @@ public class TaskController extends BaseController {
         return baseJsonResponse;
     }
 
+    @RequestMapping(value = "/tasks")
+    public BaseJsonResponse getTasksByPage(@RequestParam("page_size") int pageSize,
+                                           @RequestParam("page_number") int pageNumber) {
+        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
+        List<Task> tasks = taskMapper.selectTasks(new RowBounds(pageSize * pageNumber, pageSize));
+        baseJsonResponse.setObj(tasks.stream().map(this::parse).collect(Collectors.toList()));
+        return baseJsonResponse;
+    }
+
     //used
     @RequestMapping(value = "/getAcceptTasks")
     @Authentication(Role.User)
@@ -103,6 +112,7 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/getCompanyTasks")
+    @Authentication
     public BaseJsonResponse getCompanyTasks(@RequestParam("companyId") int companyId) {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         baseJsonResponse.setObj(Lists.transform(taskMapper.getCompanyTasks(companyId), this::parse));
@@ -110,6 +120,7 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/getSearchTypes")
+    @Authentication
     public BaseJsonResponse getSearchTypes() {
         List<Type> typelist = typeMapper.selectAllTypes();
         // typelist.stream().collect(Collectors.groupingBy(Type::getTypeClassification));
@@ -164,6 +175,7 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/getTakenTask")
+    @Authentication
     public BaseJsonResponse getMyPublishedTask(@RequestParam("userId") int userId) {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         List<Task> tasks = taskMapper.getTakenTasksByUserId(userId);
@@ -173,6 +185,7 @@ public class TaskController extends BaseController {
 
 
     @RequestMapping(value = "/takenTasks")
+    @Authentication
     public BaseJsonResponse getMyTaken(@RequestParam("userId") int userId) {
         System.out.println("getMyTaken");
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
@@ -182,10 +195,11 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/isTaken")
+    @Authentication
     public BaseJsonResponse isTaken(@RequestParam("userId") int userId, @RequestParam("taskId") int taskId) {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserTakeKey userTakeKey = new UserTakeKey();
-        userTakeKey.setUserId(userId);
+        userTakeKey.setUserId(userId == 0 ? getToken().getId() : userId);
         userTakeKey.setTaskId(taskId);
         UserTake userTake = userTakeMapper.selectByPrimaryKey(userTakeKey);
         BaseBean baseBean = new BaseBean(Objects.nonNull(userTake));
@@ -194,6 +208,7 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/getTaskById")
+    @Authentication
     public BaseJsonResponse getTaskById(@RequestParam("taskId") int taskId) {
         System.out.println("getTaskById");
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
@@ -203,6 +218,7 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/cancelPublishedTask")
+    @Authentication
     public void cancelPublishedTask(@RequestParam("taskId") int taskId) {
         taskMapper.deleteByPrimaryKey(taskId);
         System.out.println("task" + taskId + "已删除");
@@ -210,6 +226,7 @@ public class TaskController extends BaseController {
 
 
     @RequestMapping(value = "/getSearch")
+    @Authentication
     public BaseJsonResponse getSearch(@RequestParam("map") String map) {
         System.out.println(map);
         String[] list = map.split(",");
@@ -223,18 +240,20 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/cancelTaken")
+    @Authentication
     public void cancelTaken(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
         UserTakeKey userTakeKey = new UserTakeKey();
         userTakeKey.setTaskId(taskId);
-        userTakeKey.setUserId(userId);
+        userTakeKey.setUserId(userId == 0 ? getToken().getId() : userId);
         userTakeMapper.deleteByPrimaryKey(userTakeKey);
         System.out.println("delete user take~");
     }
 
     @RequestMapping(value = "/takeTask")
+    @Authentication
     public void takeTask(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
         UserTake userTake = new UserTake();
-        userTake.setUserId(userId);
+        userTake.setUserId(userId == 0 ? getToken().getId() : userId);
         userTake.setTaskId(taskId);
         userTake.setStatus(1);
         userTakeMapper.insert(userTake);
@@ -242,7 +261,9 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/userTakeTask")
+    @Authentication
     public BaseJsonResponse userTakeTask(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
+        userId = userId == 0 ? getToken().getId() : userId;
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserTakeKey userTakeKey = new UserTakeKey();
         userTakeKey.setUserId(userId);
@@ -263,6 +284,7 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/singleTask")
+    @Authentication
     public BaseJsonResponse takeTask(@RequestParam("taskId") String taskId) {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         HttpSession session = servletRequest.getSession();
@@ -271,6 +293,7 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/editTask")
+    @Authentication
     public BaseJsonResponse editTask(@RequestParam("taskId") String taskId,
                                      @RequestParam("taskTitle") String taskTitle,
                                      @RequestParam("taskDescription") String taskDescription,
@@ -303,6 +326,7 @@ public class TaskController extends BaseController {
 
 
     @RequestMapping(value = "/deleteTask")
+    @Authentication
     public BaseJsonResponse editTask(@RequestParam("taskId") String taskId) {
         int companyId = taskMapper.selectByPrimaryKey(Integer.valueOf(taskId)).getCompanyId();
         taskMapper.deleteByPrimaryKey(Integer.valueOf(taskId));
@@ -313,10 +337,11 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/userCancelTakeTask")
+    @Authentication
     public BaseJsonResponse userCancelTakeTask(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserTakeKey userTakeKey = new UserTakeKey();
-        userTakeKey.setUserId(userId);
+        userTakeKey.setUserId(userId == 0 ? getToken().getId() : userId);
         userTakeKey.setTaskId(taskId);
         UserTake userTake = userTakeMapper.selectByPrimaryKey(userTakeKey);
         if (userTake == null) {
@@ -344,10 +369,11 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/isCollected")
+    @Authentication
     public BaseJsonResponse isCollected(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserCollectKey userTakeKey = new UserCollectKey();
-        userTakeKey.setUserId(userId);
+        userTakeKey.setUserId(userId == 0 ? getToken().getId() : userId);
         userTakeKey.setTaskId(taskId);
         UserCollectKey userTake = userCollectMapper.selectByPrimaryKey(userTakeKey);
         BaseBean baseBean = new BaseBean(Objects.nonNull(userTake));
@@ -357,10 +383,11 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/collect")
+    @Authentication
     public BaseJsonResponse collect(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserCollectKey userCollectKey = new UserCollectKey();
-        userCollectKey.setUserId(userId);
+        userCollectKey.setUserId(userId == 0 ? getToken().getId() : userId);
         userCollectKey.setTaskId(taskId);
         UserCollectKey userTake = userCollectMapper.selectByPrimaryKey(userCollectKey);
         if (Objects.nonNull(userTake)) {
@@ -376,10 +403,11 @@ public class TaskController extends BaseController {
 
 
     @RequestMapping(value = "/isTake")
+    @Authentication
     public BaseJsonResponse isTake(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserTakeKey userTakeKey = new UserTakeKey();
-        userTakeKey.setUserId(userId);
+        userTakeKey.setUserId(userId == 0 ? getToken().getId() : userId);
         userTakeKey.setTaskId(taskId);
         UserTake userTake = userTakeMapper.selectByPrimaryKey(userTakeKey);
         BaseBean baseBean = new BaseBean(Objects.nonNull(userTake));
@@ -390,10 +418,11 @@ public class TaskController extends BaseController {
 
 
     @RequestMapping(value = "/take")
+    @Authentication
     public BaseJsonResponse take(@RequestParam("taskId") int taskId, @RequestParam("userId") int userId) {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserTakeKey userTakeKey = new UserTakeKey();
-        userTakeKey.setUserId(userId);
+        userTakeKey.setUserId(userId == 0 ? getToken().getId() : userId);
         userTakeKey.setTaskId(taskId);
         UserTake userTake = userTakeMapper.selectByPrimaryKey(userTakeKey);
         if (Objects.nonNull(userTake)) {
@@ -408,6 +437,7 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/showParticipant")
+    @Authentication
     public BaseJsonResponse showParticipant(@RequestParam("taskId") int taskId) {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         BaseBean baseBean = new BaseBean();
@@ -420,6 +450,7 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/getParticipant")
+    @Authentication
     public BaseJsonResponse getParticipant(@RequestParam("taskId") int taskId) {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         BaseBean baseBean = new BaseBean();

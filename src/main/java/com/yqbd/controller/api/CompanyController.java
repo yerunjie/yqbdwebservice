@@ -2,9 +2,9 @@ package com.yqbd.controller.api;
 
 
 import com.yqbd.beans.BaseBean;
-import com.yqbd.dto.response.BaseJsonResponse;
 import com.yqbd.beans.CompanyInfoBean;
 import com.yqbd.controller.BaseController;
+import com.yqbd.dto.response.BaseJsonResponse;
 import com.yqbd.mapper.CompanyInfoMapper;
 import com.yqbd.mapper.GroupInfoMapper;
 import com.yqbd.model.CompanyInfo;
@@ -79,7 +79,7 @@ public class CompanyController extends BaseController {
     }
 
     @RequestMapping(value = "/getAllCompanies")
-        public BaseJsonResponse getAllCompanies() {
+    public BaseJsonResponse getAllCompanies() {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         List<CompanyInfo> companyInfoList = companyInfoMapper.getAllCompanies();
         baseJsonResponse.setObj(companyInfoList.stream().map(this::parse).collect(Collectors.toList()));

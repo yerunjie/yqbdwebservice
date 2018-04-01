@@ -4,6 +4,7 @@ import com.yqbd.beans.UserInfoBean;
 import com.yqbd.model.Task;
 import com.yqbd.model.UserInfo;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
@@ -120,9 +121,14 @@ public interface TaskMapper {
     @Select({
             "SELECT * FROM task"
     })
-
     @ResultType(Task.class)
     List<Task> selectAllTasks();
+
+    @Select({
+            "SELECT * FROM task"
+    })
+    @ResultType(Task.class)
+    List<Task> selectTasks(RowBounds rowBounds);
 
     @ResultType(Task.class)
     List<Task> getSearchTasks(List<Integer> list);
