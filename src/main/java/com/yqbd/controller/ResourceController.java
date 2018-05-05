@@ -1,3 +1,4 @@
+/*
 package com.yqbd.controller;
 
 import com.google.common.collect.Maps;
@@ -71,3 +72,4 @@ public class ResourceController extends BaseController {
         out.close();
     }
 }
+*/
