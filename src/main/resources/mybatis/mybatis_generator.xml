@@ -5,7 +5,7 @@
 <generatorConfiguration>
     <!--<properties resource="jdbc.properties"/>-->
     <!-- !!!! Driver Class Path !!!! -->
-    <classPathEntry location="E://java/maven-repo/mysql/mysql-connector-java/5.1.29/mysql-connector-java-5.1.29.jar"/>
+    <classPathEntry location="/Users/yerunjie/IdeaProjects/jar/mysql-connector-java-5.1.18.jar"/>
 
     <context id="context" targetRuntime="MyBatis3">
         <commentGenerator>
@@ -15,9 +15,9 @@
 
         <!-- !!!! Database Configurations !!!! -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/yqbd"
+                        connectionURL="jdbc:mysql://localhost:3306/nztrip"
                         userId="root"
-                        password="">
+                        password="123456">
         </jdbcConnection>
 
         <javaTypeResolver>
@@ -41,7 +41,7 @@
         </javaClientGenerator>
 
         <!-- !!!! Table Configurations !!!! -->
-        <table tableName="user_info" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+        <table tableName="sku_ticket_price" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false"/>
     </context>
 </generatorConfiguration>
