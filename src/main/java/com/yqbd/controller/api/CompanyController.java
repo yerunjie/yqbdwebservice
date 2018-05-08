@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/company")
+@RequestMapping("/v1/api/company")
 public class CompanyController extends BaseController {
 
     @Autowired
