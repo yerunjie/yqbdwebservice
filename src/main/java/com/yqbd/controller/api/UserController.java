@@ -94,24 +94,21 @@ public class UserController extends BaseController {
         return baseJsonResponse;
     }
 
-    @RequestMapping(value = "/register")
-    public BaseJsonResponse register(@RequestParam("accountNumber") String accountNumber, @RequestParam("userPassword") String userPassword,
-                                     @RequestParam("realName") String realName) {
-        BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public BaseJsonResponse register(@RequestParam("accountNumber") String accountNumber, @RequestParam("userPassword") String userPassword){
+        BaseJsonResponse baseJson = new BaseJsonResponse();
         UserInfo userInfo = new UserInfo();
         userInfo.setAccountNumber(accountNumber);
         userInfo.setPassword(userPassword);
-        userInfo.setRealName(realName);
         userInfoMapper.insertSelective(userInfo);
         BaseBean baseBean = new BaseBean();
         int result;
         result = userInfo.getUserId();
         baseBean.setSingleResult(String.valueOf(result));
-        baseJsonResponse.setObj(baseBean);
-        baseJsonResponse.setReturnCode("2.0");
-        baseJsonResponse.setErrorMessage("成功");
-        return baseJsonResponse;
+        baseJson.setObj(baseBean);
+        baseJson.setReturnCode("2.0");
+        baseJson.setErrorMessage("成功");
+        return baseJson;
     }
-
 
 }

@@ -31,8 +31,8 @@
                     </svg>
                     <input type="password"name="password" id="password" class="login__input pass" placeholder="Password"/>
                 </div>
-                <button type="button" class="login__submit" onclick="loginfuc();return false;">Sign in</button>
-                <p class="login__signup">Don't have an account? &nbsp;<a href = "/wechat/register">Sign up</a></p>
+                <button type="button" class="login__submit" onclick="registerfunc();return false;">Sign up</button>
+                <p class="login__signup">I have an account&nbsp;<a href = "/wechat/login">Sign in</a></p>
             </div>
         </div>
         <div class="app">
@@ -118,31 +118,31 @@
 <script type="text/javascript" src="../assets/js/app.js" ></script>
 <script type="text/javascript" src="../assets/js/blockUI.js" ></script>
 <script type="text/javascript">
-    function loginfuc() {
+    function registerfunc() {
         var account = $("#account").val();
         var password = $("#password").val();
         $.ajax({
             type: "post",
-            url:"/wechat/userLogin",
+            url:"/v1/api/user/register",
             timeout:80000,
             dataType:"json",
             data:{
-                "userAccount":account,
+                "accountNumber":account,
                 "userPassword":password
             },
 
             success:function(data){
                 if(data.returnCode==="3.0.E.2"){
                     alert("账号或密码错误！");
-                    window.location.href="login";
+                    window.location.href="register";
                 }
                 else if(data.returnCode==="3.0.E.1"){
                     alert("没有该用户");
-                    window.location.href="login";
+                    window.location.href="register";
                 }
                 else{
-                    alert("登录成功");
-                    window.location.href="list";
+                    alert("注册成功");
+                    window.location.href="login";
                 }
             },
 

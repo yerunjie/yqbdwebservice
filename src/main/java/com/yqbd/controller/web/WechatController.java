@@ -93,10 +93,14 @@ public class WechatController extends BaseController {
         BeanUtils.copyProperties(companyInfo, result);
         return result;
     }
-
+    @RequestMapping(value = "/register")
+    public String register(Map<String, Object> model) {
+        model.put("module", "wechat_index");
+        return "wechat_register";
+    }
     @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
     @ResponseBody
-    public BaseJsonResponse companyLogin(@RequestParam("userAccount") String userAccount, @RequestParam("userPassword") String userPassword) {
+    public BaseJsonResponse userLogin(@RequestParam("userAccount") String userAccount, @RequestParam("userPassword") String userPassword) {
         BaseJsonResponse baseJsonResponse = new BaseJsonResponse();
         UserInfo userInfo = userInfoMapper.selectByAccountNumber(userAccount);
         BaseBean baseBean = new BaseBean();
